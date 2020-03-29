@@ -1,5 +1,6 @@
 const express = require("express");
 const session = require("express-session");
+const sequelize = require("./models").sequelize;
 const dotenv = require("dotenv");
 const cors = require("cors");
 const app = express();
@@ -9,6 +10,9 @@ app.use(express.json());
 
 // env_환경변수
 dotenv.config({ path: './.env' });
+
+// sequlize
+sequelize.sync();
 
 // cors
 /* 
