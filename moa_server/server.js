@@ -1,6 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const sequelize = require("./models").sequelize;
+const connect = require("./schemas");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const app = express();
@@ -13,6 +14,9 @@ dotenv.config({ path: './.env' });
 
 // sequlize
 sequelize.sync();
+
+// mongoose
+connect();
 
 // cors
 /* 
