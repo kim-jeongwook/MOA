@@ -1,14 +1,13 @@
 import React, { Component } from "react";
+import { Nav } from "react-bootstrap";
 
 class LoginedMenu extends Component{
     render(){
-        const menuStyle = { float: "right", margin: "1vw" };
-
         return(
-            <div>
-                <div style={menuStyle} onClick={this.props.UserInfo} >내 정보</div>
-                <div style={menuStyle} onClick={this.props.NotLogined}>로그아웃</div>
-            </div>
+            <Nav>
+                <Nav.Link onClick={this.props.UserInfo}>내 정보</Nav.Link>
+                <Nav.Link onClick={this.props.NotLogined}>로그아웃</Nav.Link>
+            </Nav>
         );
     }
 }
