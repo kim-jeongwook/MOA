@@ -6,6 +6,9 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const app = express();
 
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -49,6 +52,15 @@ app.use("/member", require("./routes/memberRouter"));
 app.use("/plan", require("./routes/planRouter"));
 app.use("/room", require("./routes/roomRouter"));
 
-app.listen(8080, () => {
+http.listen(8080, () => {
   console.log("server ready");
+});
+
+io.on("connection",(socket)=>{
+  socket.on("onicecandidate",(data)=>{
+      socket.broadcast.emit("onicecandidate",data);
+  })
+  socket.on("sdp",(data)=>{
+      socket.broadcast.emit("sdp",data);
+  })
 });
