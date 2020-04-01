@@ -36,4 +36,24 @@ router.post("/Signup", async (req, res, next) => {
   }
 });
 
+router.post("/Login", async (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  try {
+    const search_result = await Member.findOne({ where: { email, password } });
+    if (!search_result) {
+      res.json({ resultCode: false, msg: "다시 로그인하세요" });
+    } else {
+      req.session.email = email; //세션생성
+      res.json({ resultCode: true, msg: "로그인 됨" });
+    }
+  } catch (err) {
+    // error 처리
+    resultCode = 0;
+    res.json({ resultCode: false, msg: "로그인에 문제가 생겼습니다." });
+    console.log(err);
+  }
+});
+
 module.exports = router;
