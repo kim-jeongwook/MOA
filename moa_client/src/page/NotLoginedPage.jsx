@@ -61,7 +61,7 @@ class NotLoginedPage extends Component{
                     <input type="password" placeholder="Enter Password" name="psw" style={inputStyle} required />
 
                     <button onClick={this.props.Logined} style={loginBtnStyle} >로그인</button>
-                    <button style={signupBtnStyle} >회원가입</button>
+                    <button onClick={this.props.Signup} style={signupBtnStyle} >회원가입</button>
                 </div>
             </div>
         );

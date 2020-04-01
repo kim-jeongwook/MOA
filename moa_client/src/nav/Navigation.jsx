@@ -17,6 +17,7 @@ class Navigation extends Component {
                 
             case "Logined":
             case "UserInfo":
+            case "Signup":
                 navView = <LoginedMenu 
                     NotLogined={this.props.NotLogined}
                     UserInfo={this.props.UserInfo}

@@ -11,7 +11,8 @@ const mapDispatchToProps = (dispatch) => {
         NotLogined: () => { return dispatch({ type: "NotLogined" }); },
         Logined:    () => { return dispatch({ type: "Logined" }); },
         UserInfo:   () => { return dispatch({ type: "UserInfo" }); },
-        InRoom:   () => { return dispatch({ type: "InRoom" }); },
+        InRoom:     () => { return dispatch({ type: "InRoom" }); },
+        Signup:     () => { return dispatch({ type: "Signup" }); },
     };
 }
 

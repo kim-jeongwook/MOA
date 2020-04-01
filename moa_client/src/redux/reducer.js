@@ -16,7 +16,10 @@ const reducer = (state, action) => {
             return { page_status: "UserInfo" };
             
         case "InRoom":
-            return { page_status: "InRoom"};
+            return { page_status: "InRoom" };
+
+        case "Signup":
+            return { page_status: "Signup" };
 
         default:
             return state;
