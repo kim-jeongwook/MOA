@@ -7,6 +7,8 @@ import NotLoginedPage from "./page/NotLoginedPage";
 import Posts from "./page/Posts";
 import UserInfo from "./page/UserInfo"
 import Room from "./page/Room";
+import SignupPage from "./page/SignupPage";
+import CreateRoomPage from "./page/CreateRoomPage";
 
 class MainPage extends Component{
     render(){
@@ -14,11 +16,13 @@ class MainPage extends Component{
 
         switch(this.props.pageValue){
             case "NotLogined":
-                pageView = <NotLoginedPage  Logined={this.props.Logined}/>;
+                pageView = <NotLoginedPage  
+                    Logined={this.props.Logined} 
+                    Signup={this.props.Signup}/>;
                 break;
 
             case "Logined":
-                pageView = <Posts />;
+                pageView = <Posts CreateRoom={this.props.CreateRoom} />;
                 break;
 
             case "UserInfo":
@@ -27,6 +31,14 @@ class MainPage extends Component{
 
             case "InRoom":
                 pageView = <Room />;
+                break;
+
+            case "Signup":
+                pageView = <SignupPage />
+                break;
+
+            case "CreateRoom":
+                pageView = <CreateRoomPage />
                 break;
 
             default:
