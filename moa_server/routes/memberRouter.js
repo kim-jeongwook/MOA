@@ -1,5 +1,39 @@
 const express = require("express");
 const router = express.Router();
+const models = require("../models");
+const Member = require("../models").Member;
 
+router.post("/Signup", async (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const nickname = req.body.nickname;
+  const profileimg = req.body.profileimg;
+  // const nickname = req.body.nickname;
+
+  try {
+    // 이메일 중복 조회, Member table insert, UserInfo table insert
+    await models.sequelize.transaction(async t => {
+      // 1. 이메일 중복 조회
+      const search_result = await Member.findOne({ where: { email } });
+      if (!search_result) {
+        await Member.create({
+          email,
+          password,
+          nickname,
+          profileimg
+        });
+      } else {
+        res.json({ resultCode: false, msg: "중복된 이메일입니다" });
+      }
+    });
+
+    res.json({ resultCode: true, msg: "가입이 완료되었습니다" });
+  } catch (err) {
+    // error 처리
+    resultCode = 0;
+    res.json({ resultCode: false, msg: "회원가입에 문제가 생겼습니다." });
+    console.log(err);
+  }
+});
 
 module.exports = router;
