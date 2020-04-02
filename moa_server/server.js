@@ -56,11 +56,19 @@ http.listen(8080, () => {
   console.log("server ready");
 });
 
+var room=[];
+
 io.on("connection",(socket)=>{
-  socket.on("onicecandidate",(data)=>{
-      socket.broadcast.emit("onicecandidate",data);
-  })
-  socket.on("sdp",(data)=>{
-      socket.broadcast.emit("sdp",data);
-  })
+    socket.on("onicecandidate",(data)=>{
+        socket.broadcast.emit("onicecandidate",data);
+    })
+    socket.on("sdp",(data)=>{
+        socket.broadcast.emit("sdp",data);
+    })
+    socket.on("disconnect",(evt)=>{
+        socket.broadcast.emit("out", room[socket.id]);
+    })
+    socket.on("stream",(data)=>{
+        room[socket.id]=data;
+    })
 });
