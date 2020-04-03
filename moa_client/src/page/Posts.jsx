@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Table } from "react-bootstrap";
+import { Container, Button, Table } from "react-bootstrap";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../redux/reduxFun";
 
@@ -12,53 +12,50 @@ class Posts extends Component{
 
     componentDidMount = async () => {
         try{
-            const result = await axios.get("http://localhost:8080/room");
-            console.log(result);
-            
+            const result = await axios.get("http://localhost:8080/room");       
             this.setState({
                 rooms: result.data.msg
             });
-           
         } catch(err){
-            if (!err.response) {
-                // network error
-                console.log("Network Error");
-                return;
-            } else {
-                console.log(err.response.data.message);
-            }
+            console.log(err);
         }
     }
 
     render(){
-        const rooms = this.state.rooms.map((room) => {
-            return (<td>{room}</td>);
-        });
-
-        const btnStyle = {
-            border: "2px solid black",
-            backgroundColor: "white",
-            color: "black",
-            padding: "14px 28px",
-            fontSize: "16px",
-            cursor: "pointer",
-            /* Gray */
-            borderColor: "#e7e7e7",
-            Color: "black",
-        }
+        const rooms = this.state.rooms.length === 0?
+            <tr><td className="text-center" colSpan="7">참가한 미팅룸이 없습니다</td></tr> : 
+            this.state.rooms.map((room) => {
+                return (<tr key={room.id}>
+                    <td>{room.id}</td>
+                    <td>{room.room_name}</td>
+                    <td>{room.room_url}</td>
+                    <td>{room.is_secret}</td>
+                    <td>{room.password}</td>
+                    <td>{room.master_id}</td>
+                    <td>{room.createdAt}</td>
+                </tr>);
+            });
        
         return(
-            <div>
-                <div onClick={this.props.InRoom}>Posts</div>
-                <button onClick={this.props.CreateRoom} style={btnStyle}>+ 미팅룸 만들기</button>
-                <table>
+            <Container>
+                <Button onClick={this.props.CreateRoom} variant="outline-dark">+ 미팅룸 만들기</Button>
+                <Table bordered hover className="my-4">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>Name</th>
+                            <th>url</th>
+                            <th>secret</th>
+                            <th>password</th>
+                            <th>masterid</th>
+                            <th>createdAt</th>
+                        </tr>
+                    </thead>
                     <tbody>
-                    <tr>
                         {rooms}
-                    </tr>
                     </tbody>
-                </table>
-            </div>
+                </Table>
+            </Container>
         );
     }
 }
