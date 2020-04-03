@@ -9,7 +9,7 @@ import Navigation from "./nav/Navigation";
 import MainPage from "./MainPage";
 
 // bootstrap 사용을 위해 bootstrap.min.css import
-//import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const store = createStore(Reducer);
 

@@ -25,7 +25,7 @@ class MainPage extends Component {
             break;
 
         case "Logined":
-            pageView = <Posts CreateRoom={this.props.CreateRoom} />;
+            pageView = <Posts InRoom={this.props.InRoom} CreateRoom={this.props.CreateRoom} />;
             break;
 
         case "UserInfo":

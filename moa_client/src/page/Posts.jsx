@@ -39,6 +39,7 @@ class Posts extends Component{
         return(
             <Container>
                 <Button onClick={this.props.CreateRoom} variant="outline-dark">+ 미팅룸 만들기</Button>
+                <Button onClick={this.props.InRoom} >시험용 room</Button>
                 <Table bordered hover className="my-4">
                     <thead>
                         <tr>
