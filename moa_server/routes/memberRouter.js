@@ -37,6 +37,7 @@ router.post("/Signup", async (req, res, next) => {
 });
 
 router.post("/Login", async (req, res, next) => {
+  const id = req.body.id;
   const email = req.body.email;
   const password = req.body.password;
 
@@ -46,6 +47,7 @@ router.post("/Login", async (req, res, next) => {
       res.json({ resultCode: false, msg: "다시 로그인하세요" });
     } else {
       req.session.email = email; //세션생성
+      req.session.id = id; //세션생성
       res.json({ resultCode: true, msg: "로그인 됨" });
     }
   } catch (err) {
@@ -86,4 +88,37 @@ router.post("/Deletemember", async (req, res, next) => {
   }
 });
 
+/* Router.update(
+  { title: req.body.title },
+  { returning: true, where: { id: req.params.bookId } }
+)
+  .then(function([rowsUpdate, [updatedBook]]) {
+    res.json(updatedBook);
+  })
+  .catch(next); */
+
+router.post("/Memberupdate", async (req, res, next) => {
+  const email = req.session.email;
+  const password = req.body.password;
+  const nickname = req.body.nickname;
+  const profileimg = req.body.profileimg;
+  console.log(req.session.email);
+  try {
+    await Member.update(
+      {
+        email,
+        password,
+        nickname,
+        profileimg
+      },
+      { where: { email } }
+    );
+    res.json({ resultCode: true, msg: "변경완료" });
+  } catch (err) {
+    // error 처리
+    resultCode = 0;
+    res.json({ resultCode: false, msg: "정보수정 오류." });
+    console.log(err);
+  }
+});
 module.exports = router;

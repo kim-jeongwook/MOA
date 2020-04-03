@@ -56,29 +56,29 @@ http.listen(8080, () => {
   console.log("server ready");
 });
 
-var room=[];
+var room = [];
 
-io.on("connection",(socket)=>{
-    socket.on("onicecandidate",(data)=>{
-        socket.broadcast.emit("onicecandidate",data);
-    })
-    socket.on("sdp",(data)=>{
-        socket.broadcast.emit("sdp",data);
-    })
-    socket.on("disconnect",(evt)=>{
-        socket.broadcast.emit("out", room[socket.id]);
-    })
-    socket.on("stream",(data)=>{
-        room[socket.id]=data;
-    })
+io.on("connection", socket => {
+  socket.on("onicecandidate", data => {
+    socket.broadcast.emit("onicecandidate", data);
+  });
+  socket.on("sdp", data => {
+    socket.broadcast.emit("sdp", data);
+  });
+  socket.on("disconnect", evt => {
+    socket.broadcast.emit("out", room[socket.id]);
+  });
+  socket.on("stream", data => {
+    room[socket.id] = data;
+  });
 });
 
-io.on('connection', (socket) =>{
-  console.log('사용자 접속', socket.client.id)
+io.on("connection", socket => {
+  console.log("사용자 접속", socket.client.id);
 
-  socket.on('chat-msg', (msg)=>{
-      console.log('message', msg)
+  socket.on("chat-msg", msg => {
+    console.log("message", msg);
 
-      io.emit('chat-msg', msg)
-  })
-})
+    io.emit("chat-msg", msg);
+  });
+});
