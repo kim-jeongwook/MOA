@@ -56,4 +56,34 @@ router.post("/Login", async (req, res, next) => {
   }
 });
 
+router.get("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.json({ message: "로그아웃됨" });
+  });
+});
+
+router.post("/Deletemember", async (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  try {
+    await models.sequelize.transaction(async t => {
+      console.log(req.body.email);
+      const search_result = await Member.destroy({
+        where: { email, password }
+      });
+      if (!search_result) {
+        res.json({ resultCode: false, msg: "그런회원 없음 ㅗ " });
+      } else {
+        res.json({ resultCode: true, msg: "ㅇㅋ ㅃㅃ ㅅㄱ" });
+      }
+    });
+  } catch (err) {
+    // error 처리
+    resultCode = 0;
+    res.json({ resultCode: false, msg: "오류." });
+    console.log(err);
+  }
+});
+
 module.exports = router;
