@@ -25,7 +25,10 @@ class MainPage extends Component {
             break;
 
         case "Logined":
-            pageView = <Posts InRoom={this.props.InRoom} CreateRoom={this.props.CreateRoom} />;
+            pageView = <Posts 
+                InRoom={this.props.InRoom} 
+                CreateRoom={this.props.CreateRoom} 
+            />;
             break;
 
         case "UserInfo":
@@ -33,7 +36,10 @@ class MainPage extends Component {
             break;
 
         case "InRoom":
-            pageView = <Room />;
+            pageView = <Room 
+                Logined={this.props.Logined}
+                roomInfo={this.props.roomInfo} 
+            />;
             break;
 
         case "Signup":

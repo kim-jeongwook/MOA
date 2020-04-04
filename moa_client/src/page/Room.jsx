@@ -66,8 +66,15 @@ class Room extends Component{
             display: "table-cell",
         };
     
+        console.log(this.props.roomInfo);
         return(
             <div>
+                <div>
+                    <span>미팅룸 명: {this.props.roomInfo.room_name}</span>
+                    <span>인원 : {this.props.roomInfo.headcount}명</span>
+                    <span>방장: {this.props.roomInfo.master}</span>
+                    <button onClick={this.props.Logined} >나가기</button>
+                </div>
                 <div style={row}>
                     <div style={column}>
                         <UserCam stream={this.state.selfstream}/>
