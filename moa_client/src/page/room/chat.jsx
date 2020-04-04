@@ -1,28 +1,15 @@
 import React, { Component } from "react";
-import socketio from 'socket.io-client';
 import {Link} from 'react-router-dom';
-
-const socket=socketio.connect('http://localhost:8080');
-
-/* class Chat extends Component{
-    render(){
-        this.props.io.emit("chat","~~~")//채팅가능
-        return(
-            <div>chat</div>
-        );
-    }
-}
-
-export default Chat; */
 
 class ChatForm extends Component{
     constructor (props){
+        console.log(props);
         super(props)
         this.state={name:'', message:'', filename:''}
     }
     send=()=>{
         this.setState({name:this.a.value, message:this.b.value, filename:this.c.value},()=>{
-            socket.emit('chat-msg', {
+            this.props.io.emit('chat-msg', {
             name: this.state.name,
             message: this.state.message,
             filename:''
@@ -52,7 +39,7 @@ class ChatForm extends Component{
         .then(data => {
             alert(data.msg);
             this.setState({name:this.a.value, message:this.b.value, filename:data.filename}, ()=>{
-                socket.emit('chat-msg', {
+                this.props.io.emit('chat-msg', {
                     name: this.state.name,
                     message: this.state.message,
                     filename: this.state.filename
@@ -66,7 +53,6 @@ class ChatForm extends Component{
         
         return(
             <div>
-                <form>
                     이름 : <input ref={ref=>this.a=ref} />
                     메시지 : <input ref={ref=>this.b=ref} />
                     <button onClick={this.send}>전송</button>
@@ -75,10 +61,6 @@ class ChatForm extends Component{
                     <p><input ref={ref=>this.c=ref} type='file' accept='image/jpg,impge/png,image/jpeg,image/gif' name='profile_img'></input></p>
                     <p><input type='submit' value='파일전송'></input></p>
                     </form>
-                  
-                    
-                </form>
-                
             </div>
         )
     }
@@ -92,7 +74,7 @@ class Chat extends Component {
     }
 
     componentDidMount () {
-        socket.on('chat-msg', (obj) =>{
+        this.props.io.on('chat-msg', (obj) =>{
             const logs2 = this.state.logs
             obj.key='key_' + (this.state.logs.length +1)
             console.log(obj)
@@ -122,21 +104,19 @@ class Chat extends Component {
         <div key={e.key} >
             <span>{e.name}</span>
             <span>: {e.message}</span>
-            <Link
+             {/*<Link>
                 to="/download"
                 onClick={this.downloadEmployeeData}>
                 <span>: {e.filename}</span>
-            </Link>
+                </Link>*/}
             <p style={{clear:'both'}} />
         </div>
     ))
         return(
             <div>
                 <h1>실시간 채팅</h1>
-                <ChatForm />
+                <ChatForm io={this.props.io}/>
                 <div>{messages}</div>
-
-
             </div>
         );
     }
