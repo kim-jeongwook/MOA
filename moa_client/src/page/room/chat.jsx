@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom';
 
 class ChatForm extends Component{
     constructor (props){
-        console.log(props);
         super(props)
         this.state={name:'', message:'', filename:''}
     }
