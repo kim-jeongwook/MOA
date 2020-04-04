@@ -71,14 +71,7 @@ io.on("connection", socket => {
   socket.on("stream", data => {
     room[socket.id] = data;
   });
-});
-
-io.on("connection", socket => {
-  console.log("사용자 접속", socket.client.id);
-
   socket.on("chat-msg", msg => {
-    console.log("message", msg);
-
     io.emit("chat-msg", msg);
   });
 });
