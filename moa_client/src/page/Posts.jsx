@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Container, Button, Table } from "react-bootstrap";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../redux/reduxFun";
-import socketio from "socket.io-client";
 
 import axios from "axios";
 
