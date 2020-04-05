@@ -3,8 +3,8 @@ import {Link} from 'react-router-dom';
 
 class ChatForm extends Component{
     constructor (props){
-        super(props)
-        this.state={name:'', message:'', filename:''}
+        super(props);
+        this.state={name:'', message:'', filename:''};
     }
     send=()=>{
         this.setState({name:this.a.value, message:this.b.value, filename:this.c.value},()=>{
