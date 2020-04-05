@@ -13,6 +13,10 @@ class Room extends Component{
         otherCams:[],
         selfstream:null
     }
+    constructor(props){
+        super(props);
+        io.emit('join',this.props.roomInfo.room_id);
+    }
     componentDidMount(){
         function gotDescription(desc) {
             pc.setLocalDescription(desc);
@@ -65,8 +69,6 @@ class Room extends Component{
         const column = {
             display: "table-cell",
         };
-    
-        console.log(this.props.roomInfo);
         return(
             <div>
                 <div>
