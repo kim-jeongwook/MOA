@@ -30,6 +30,7 @@ router.post("/enter", async (req, res) => {
         res.json({
             resultCode: true, 
             msg: { 
+                room_id:enter_room[0].room_id,
                 room_name: enter_room[0].room_name,
                 is_secret: enter_room[0].is_secret,
                 headcount: enter_room[0].headcount,
@@ -46,6 +47,7 @@ router.post("/enter", async (req, res) => {
                 res.json({ 
                     resultCode: true, 
                     msg: { 
+                        room_id: RoomItem.id,
                         room_name: RoomItem.room_name,
                         is_secret: RoomItem.is_secret,
                         headcount: RoomItem.headcount,

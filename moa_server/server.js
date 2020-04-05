@@ -59,19 +59,28 @@ http.listen(8080, () => {
 var room = [];
 
 io.on("connection", socket => {
+  console.log(socket.id);
+  socket.on("join", data => {
+    socket.join(data);
+    socket.room_id=data;
+    room[socket.room_id]=[];
+  })
   socket.on("onicecandidate", data => {
-    socket.broadcast.emit("onicecandidate", data);
+    socket.broadcast.to(socket.room_id).emit("onicecandidate", data);
   });
   socket.on("sdp", data => {
-    socket.broadcast.emit("sdp", data);
+    socket.broadcast.to(socket.room_id).emit("sdp", data);
   });
   socket.on("disconnect", evt => {
-    socket.broadcast.emit("out", room[socket.id]);
+    if(socket.room_id){
+      socket.broadcast.to(socket.room_id).emit("out", room[socket.room_id][socket.id]);
+      socket.leave(socket.room_id);
+    }
   });
   socket.on("stream", data => {
-    room[socket.id] = data;
+    room[socket.room_id][socket.id] = data;
   });
   socket.on("chat-msg", msg => {
-    io.emit("chat-msg", msg);
+    io.to(socket.room_id).emit("chat-msg", msg);
   });
 });
