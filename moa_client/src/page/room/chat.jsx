@@ -32,7 +32,8 @@ class ChatForm extends Component{
     register = (regiInfo) => {
         fetch('http://localhost:8080/file/file', {
           method:'post',
-          body: regiInfo
+          body: regiInfo,
+          credentials: 'include'
         })
         .then(res => res.json())
         .then(data => {
