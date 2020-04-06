@@ -43,7 +43,7 @@ app.use(
     secret: process.env.SESSION_SECRET_KEY, // 쿠키를 임의로 변조하는것을 방지하기 위한 값
     cookie: {
       httpOnly: true, // HttpOnly Set-Cookie 속성
-      secure: true, // 쿠키 보안 설정(https 사용시 true 설정)
+      secure: false, // 쿠키 보안 설정(https 사용시 true 설정)
     },
   })
 );
