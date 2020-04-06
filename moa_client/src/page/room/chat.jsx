@@ -1,14 +1,46 @@
 import React, { Component } from "react";
 import {Link} from 'react-router-dom';
+import axios from 'axios';
 
+axios.defaults.withCredentials = true;
+const headers = { withCredentials: true };
+
+////////////////////////////////////////////////////////////
+//////////////////////// chatform 클래스/////////////////////
+/////////////////////////////////////////////////////////////
 class ChatForm extends Component{
     constructor (props){
         super(props);
-        this.state={name:'', message:'', filename:''};
+        this.state={name:'', message:'', filename:'',file_originalname:''};
     }
-    send=()=>{
+
+    /////
+    // 채팅 및 파일 경로 DB에 저장
+    /////
+    chatSave=async()=>{
+        const send_param={
+           
+            room_id:this.props.room,
+            name:this.state.name,
+            message:this.state.message,
+            filename:this.state.filename,
+            file_originalname:this.state.file_originalname
+        };
+        try {
+            const result= await axios.post("http://localhost:8080/file/chat", send_param);
+            alert(result.data.msg);
+        } catch(err){
+            console.log(err);
+        };
+    }
+
+
+    // '전송' 버튼 실행 함수
+    send= ()=>{
+        this.chatSave();
         this.setState({name:this.a.value, message:this.b.value, filename:this.c.value},()=>{
             this.props.io.emit('chat-msg', {
+            
             name: this.state.name,
             message: this.state.message,
             filename:''
@@ -18,32 +50,37 @@ class ChatForm extends Component{
        
     }
     
-    
-    fileUpload=(event)=>{
+    // 파일 업로드 실행 함수, 이름/메시지도 같이 보내짐
+    fileUpload=async (event)=>{
+        
+        
+
         event.preventDefault();
         const formData = new FormData();
         formData.append('profile_img', event.target.profile_img.files[0]);
         this.register(formData)
         
-        this.a.value=""
-        this.b.value=""
-        this.c.value=""
+        
     }
     register = (regiInfo) => {
         fetch('http://localhost:8080/file/file', {
           method:'post',
-          body: regiInfo,
-          credentials: 'include'
+          body: regiInfo
         })
         .then(res => res.json())
         .then(data => {
+            
             alert(data.msg);
-            this.setState({name:this.a.value, message:this.b.value, filename:data.filename}, ()=>{
+            this.setState({name:this.a.value, message:this.b.value, filename:data.filename, file_originalname:data.originalname}, ()=>{
                 this.props.io.emit('chat-msg', {
                     name: this.state.name,
                     message: this.state.message,
-                    filename: this.state.filename
+                    filename: data.originalname
                 })
+                this.chatSave();
+                this.a.value=""
+                this.b.value=""
+                this.c.value=""
             })
         })
     }
@@ -65,6 +102,10 @@ class ChatForm extends Component{
         )
     }
 }
+
+///////////////////////////////////////////////////////////////
+///////////////////Chat 클래스////////////////////////////////
+/////////////////////////////////////////////////////////////
 class Chat extends Component {
     constructor (props) {
         super(props)
@@ -73,6 +114,7 @@ class Chat extends Component {
             }
     }
 
+    // chatForm에서 emit => server에서 on후 emit=> 여기서 on
     componentDidMount () {
         this.props.io.on('chat-msg', (obj) =>{
             const logs2 = this.state.logs
@@ -104,6 +146,7 @@ class Chat extends Component {
         <div key={e.key} >
             <span>{e.name}</span>
             <span>: {e.message}</span>
+            <span>: {e.filename}</span>
              {/*<Link>
                 to="/download"
                 onClick={this.downloadEmployeeData}>
@@ -115,7 +158,7 @@ class Chat extends Component {
         return(
             <div>
                 <h1>실시간 채팅</h1>
-                <ChatForm io={this.props.io}/>
+                <ChatForm room={this.props.room} io={this.props.io}/>
                 <div>{messages}</div>
             </div>
         );
