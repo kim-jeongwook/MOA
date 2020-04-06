@@ -5,12 +5,14 @@ const connect = require("./schemas");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const app = express();
+const cookieParser = require("cookie-parser");
 
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
 
 // env_환경변수
 dotenv.config({ path: "./.env" });
@@ -29,7 +31,7 @@ connect();
  */
 const corsOptions = {
   origin: true, // 헤더 요청 구성, true값은 요청 origin 반영
-  credentials: true // 헤더를 전달하려면 true
+  credentials: true, // 헤더를 전달하려면 true
 };
 app.use(cors(corsOptions));
 
@@ -41,8 +43,8 @@ app.use(
     secret: process.env.SESSION_SECRET_KEY, // 쿠키를 임의로 변조하는것을 방지하기 위한 값
     cookie: {
       httpOnly: true, // HttpOnly Set-Cookie 속성
-      secure: true // 쿠키 보안 설정(https 사용시 true 설정)
-    }
+      secure: true, // 쿠키 보안 설정(https 사용시 true 설정)
+    },
   })
 );
 
@@ -58,29 +60,31 @@ http.listen(8080, () => {
 
 var room = [];
 
-io.on("connection", socket => {
+io.on("connection", (socket) => {
   console.log(socket.id);
-  socket.on("join", data => {
+  socket.on("join", (data) => {
     socket.join(data);
-    socket.room_id=data;
-    room[socket.room_id]=[];
-  })
-  socket.on("onicecandidate", data => {
+    socket.room_id = data;
+    room[socket.room_id] = [];
+  });
+  socket.on("onicecandidate", (data) => {
     socket.broadcast.to(socket.room_id).emit("onicecandidate", data);
   });
-  socket.on("sdp", data => {
+  socket.on("sdp", (data) => {
     socket.broadcast.to(socket.room_id).emit("sdp", data);
   });
-  socket.on("disconnect", evt => {
-    if(socket.room_id){
-      socket.broadcast.to(socket.room_id).emit("out", room[socket.room_id][socket.id]);
+  socket.on("disconnect", (evt) => {
+    if (socket.room_id) {
+      socket.broadcast
+        .to(socket.room_id)
+        .emit("out", room[socket.room_id][socket.id]);
       socket.leave(socket.room_id);
     }
   });
-  socket.on("stream", data => {
+  socket.on("stream", (data) => {
     room[socket.room_id][socket.id] = data;
   });
-  socket.on("chat-msg", msg => {
+  socket.on("chat-msg", (msg) => {
     io.to(socket.room_id).emit("chat-msg", msg);
   });
 });

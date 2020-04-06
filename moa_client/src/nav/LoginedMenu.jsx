@@ -12,6 +12,7 @@ class LoginedMenu extends Component {
       console.log(err);
     }
   };
+
   render() {
     return (
       <Nav>

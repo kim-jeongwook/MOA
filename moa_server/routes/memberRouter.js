@@ -12,7 +12,7 @@ router.post("/Signup", async (req, res, next) => {
 
   try {
     // 이메일 중복 조회, Member table insert, UserInfo table insert
-    await models.sequelize.transaction(async t => {
+    await models.sequelize.transaction(async (t) => {
       // 1. 이메일 중복 조회
       const search_result = await Member.findOne({ where: { email } });
       if (!search_result) {
@@ -20,7 +20,7 @@ router.post("/Signup", async (req, res, next) => {
           email,
           password,
           nickname,
-          profileimg
+          profileimg,
         });
       } else {
         res.json({ resultCode: false, msg: "중복된 이메일입니다" });
@@ -48,6 +48,10 @@ router.post("/Login", async (req, res, next) => {
     } else {
       req.session.email = email; //세션생성
       req.session.id = id; //세션생성
+      res.cookie("login", email, {
+        expires: new Date(Date.now() + 900000),
+        httpOnly: true,
+      });
       res.json({ resultCode: true, msg: "로그인 됨" });
     }
   } catch (err) {
@@ -58,10 +62,20 @@ router.post("/Login", async (req, res, next) => {
   }
 });
 
+router.post("/Keeplogin", (req, res) => {
+  console.log(req.cookies.login);
+  if (req.cookies.login) {
+    res.json({ resultCode: true });
+  } else {
+    res.json({ resultCode: false });
+  }
+});
+
 router.get("/logout", (req, res) => {
   req.session.destroy(() => {
     res.json({ message: "로그아웃됨" });
   });
+  res.clearCookie("login");
 });
 
 router.post("/Deletemember", async (req, res, next) => {
@@ -69,10 +83,10 @@ router.post("/Deletemember", async (req, res, next) => {
   const password = req.body.password;
 
   try {
-    await models.sequelize.transaction(async t => {
+    await models.sequelize.transaction(async (t) => {
       console.log(req.body.email);
       const search_result = await Member.destroy({
-        where: { email, password }
+        where: { email, password },
       });
       if (!search_result) {
         res.json({ resultCode: false, msg: "그런회원 없음 ㅗ " });
@@ -109,7 +123,7 @@ router.post("/Memberupdate", async (req, res, next) => {
         email,
         password,
         nickname,
-        profileimg
+        profileimg,
       },
       { where: { email } }
     );
