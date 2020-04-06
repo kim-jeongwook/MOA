@@ -9,6 +9,8 @@ const MeetingLogSchema = new Schema({
     },
     chat_contents: [{
         chat: { type: String, required: true },
+        filename: { type: String, required: true },
+        file_originalname:{ type: String, required: true },
         date: {type: Date, required: true, default: Date.now },
     }],
     room_id: {
