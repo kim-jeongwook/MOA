@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import axios from "axios";
 
-axios.defaults.headers.withCredentials = true;
+axios.defaults.withCredentials = true;
 
 class CreateRoomPage extends Component{
     /////////////////////////////////////////////

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Jumbotron, Form, Button } from "react-bootstrap";
 
-axios.defaults.headers.withCredentials = true;
+axios.defaults.withCredentials = true;
 
 class UserInfo extends Component {
   Memberupdate = async () => {

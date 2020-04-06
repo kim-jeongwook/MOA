@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-axios.defaults.headers.withCredentials = true; // 같은 origin이라 보증
+axios.defaults.withCredentials = true; // 같은 origin이라 보증
 
 class SignupPage extends Component {
   state = {
