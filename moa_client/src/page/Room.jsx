@@ -85,7 +85,7 @@ class Room extends Component{
                         {this.state.otherCams}
                     </div>
                     <div style={column}>
-                        <Chat io={io}/>
+                        <Chat room={this.props.roomInfo.room_id} io={io}/>
                     </div>
                 </div>
             </div>
