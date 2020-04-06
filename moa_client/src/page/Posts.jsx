@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../redux/reduxFun";
 
 import axios from "axios";
+axios.defaults.headers.withCredentials = true;
 
 class Posts extends Component{
     state = {

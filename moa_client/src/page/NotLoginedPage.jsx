@@ -2,13 +2,11 @@ import React, { Component } from "react";
 import { Jumbotron, Form, Button } from "react-bootstrap";
 import axios from "axios";
 
-axios.defaults.withCredentials = true; // 같은 origin이라 보증
-const headers = { withCredentials: true };
+axios.defaults.headers.withCredentials = true; // 같은 origin이라 보증
 
 class NotLoginedPage extends Component {
   Logined = async () => {
     const send_param = {
-      headers,
       email: this._id.value,
       password: this._pw.value,
     };
