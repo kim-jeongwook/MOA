@@ -3,21 +3,18 @@ import axios from "axios";
 import { Jumbotron, Form, Button } from "react-bootstrap";
 
 axios.defaults.withCredentials = true;
+const headers = { withCredentials: true };
 
 class UserInfo extends Component {
   Memberupdate = async () => {
     const send_param = {
-<<<<<<< HEAD
       headers,
       email: this._id.value,
-=======
-      password: this._pw.value,
->>>>>>> 0f7541b797b3b86dcf3432c8503a4acac938c0a5
       nickname: this._nickname.value,
       profileimg: this._img.value,
       password: this._pw.value,
-      passwordcheck: this._pw1.value,
     };
+
     const result = await axios.post(
       "http://localhost:8080/member/memberupdate",
       send_param
@@ -27,8 +24,8 @@ class UserInfo extends Component {
 
   Deletemember = async () => {
     const send_param = {
-      email: this._id.value,
-      password: this._pw.value,
+      email: this._id2.value,
+      password: this._pw2.value,
     };
     try {
       const result = await axios.post(
@@ -36,10 +33,10 @@ class UserInfo extends Component {
         send_param
       );
       alert(result.data.msg);
-
-      /*   if () {
+      console.log(result.data.resultCode);
+      if (result.data.resultCode) {
         this.props.NotLogined();
-      } */
+      }
     } catch (err) {
       console.log(err);
     }
@@ -49,27 +46,28 @@ class UserInfo extends Component {
       <div>
         <Jumbotron className="float my-4 mr-5">
           내정보<br></br>
-          아이디: {""}
+          아이디:
+          <div></div>
           <input ref={(ref) => (this._id = ref)} placeholder="아이디"></input>
           <br></br>
-          닉네임 :{" "}
+          닉네임 :
           <input
             ref={(ref) => (this._nickname = ref)}
             placeholder="닉네임"
           ></input>
-          프로필사진 :{" "}
+          프로필사진 :
           <input
             ref={(ref) => (this._img = ref)}
             placeholder="이미지.jpg"
           ></input>
           <br></br>
-          비밀번호 :{" "}
+          비밀번호 :
           <input ref={(ref) => (this._pw = ref)} placeholder="비밀번호"></input>
           <br></br>
-          비밀번호확인 :{" "}
+          비밀번호확인 :
           <input
             ref={(ref) => (this._pw1 = ref)}
-            placeholder="비밀번호"
+            placeholder="비밀번호확인"
           ></input>
           <br></br>
           <br></br>
@@ -77,9 +75,12 @@ class UserInfo extends Component {
             정보 수정
           </Button>
           <br></br>
-          <input ref={(ref) => (this._id = ref)} placeholder="아이디써"></input>
+          <input ref={(ref) => (this._id2 = ref)} placeholder="아이디"></input>
+          <input
+            ref={(ref) => (this._pw2 = ref)}
+            placeholder="비밀번호"
+          ></input>
           <br></br>
-          <input ref={(ref) => (this._pw = ref)} placeholder="비밀번호"></input>
           <Button onClick={this.Deletemember} variant="primary">
             회원 탈퇴
           </Button>

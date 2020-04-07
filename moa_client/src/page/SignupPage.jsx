@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 
 axios.defaults.withCredentials = true; // 같은 origin이라 보증
+const headers = { withCredentials: true };
 
 class SignupPage extends Component {
   state = {
@@ -13,7 +14,7 @@ class SignupPage extends Component {
     );
 
     if (check_Email < 0) {
-      alert("이메일 형식이 유효하지 않습니다.");
+      alert("아이디는 이메일 형식이여야 합니다.");
       return false;
     }
     return true;
@@ -41,12 +42,15 @@ class SignupPage extends Component {
 
       return false;
     }
+    if (this._pw.value !== this._pw1.value) {
+      alert("비밀번호를 다릅니다 다시 확인하세영");
+      return false;
+    }
 
     return true;
   };
 
   Join = async () => {
-<<<<<<< HEAD
     if (
       this.checkEmail(this._id.value) &&
       this.checkPassword(this._id.value, this._pw.value)
@@ -59,22 +63,6 @@ class SignupPage extends Component {
           nickname: this._nickname.value,
           f_profile: this._f_profile.value,
         };
-=======
-    try {
-      const send_param = {
-        email: this._id.value,
-        password: this._pw.value,
-        nickname: this._nickname.value,
-        f_profile: this._f_profile.value
-      };
-
-      const joinup_result = await axios.post(
-        "http://localhost:8080/member/signup",
-        send_param
-      );
-      if (joinup_result.data.resultCode) {
-        alert(joinup_result.data.msg);
->>>>>>> 0f7541b797b3b86dcf3432c8503a4acac938c0a5
 
         const joinup_result = await axios.post(
           "http://localhost:8080/member/signup",

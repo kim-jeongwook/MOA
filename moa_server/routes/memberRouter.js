@@ -88,6 +88,9 @@ router.post("/Deletemember", async (req, res, next) => {
       res.json({ resultCode: false, msg: "그런회원 없음 ㅗ " });
     } else {
       res.json({ resultCode: true, msg: "ㅇㅋ ㅃㅃ ㅅㄱ" });
+      req.session.destroy(() => {
+        res.json({ message: "탈퇴됨" });
+      });
     }
   } catch (err) {
     // error 처리
@@ -107,21 +110,23 @@ router.post("/Deletemember", async (req, res, next) => {
   .catch(next); */
 
 router.post("/Memberupdate", async (req, res, next) => {
-  const email = req.session.email;
+  const email = req.body.email;
   const password = req.body.password;
   const nickname = req.body.nickname;
-  const profileimg = req.body.profileimg;
-  console.log(req.session.email);
+  const f_profile = req.body.profileimg;
+
+  console.log(req.body);
+
   try {
-    await Member.update(
+    const result = await Member.update(
       {
-        email,
         password,
         nickname,
-        profileimg,
+        f_profile,
       },
       { where: { email } }
     );
+
     res.json({ resultCode: true, msg: "변경완료" });
   } catch (err) {
     // error 처리
