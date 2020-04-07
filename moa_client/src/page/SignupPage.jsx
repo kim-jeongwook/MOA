@@ -6,7 +6,7 @@ axios.defaults.withCredentials = true; // 같은 origin이라 보증
 
 class SignupPage extends Component {
   
-  state = {
+  state = {     //////// 프로필 image 업로드 및 미리보기 위한 state
     _id: "",
     file:'',
     previewURL:'',
@@ -51,7 +51,7 @@ class SignupPage extends Component {
   };
 
   Join = async () => {
-    const originalname=this.state.img_originalname
+    const originalname=this.state.img_originalname   ////// 프로필 image 등록 후, setState로 파일의 originalname 받아옴
 
     if (
       this.checkEmail(this._id.value) &&
@@ -63,7 +63,7 @@ class SignupPage extends Component {
           email: this._id.value,
           password: this._pw.value,
           nickname: this._nickname.value,
-          f_profile: originalname,
+          f_profile: originalname,     //// DB에 originalname 으로 저장되게 함
         };
 
 
