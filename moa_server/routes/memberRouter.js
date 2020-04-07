@@ -2,12 +2,14 @@ const express = require("express");
 const router = express.Router();
 const models = require("../models");
 const Member = require("../models").Member;
+const multer=require('multer');
+const upload=multer({dest:'profile_uploads/'});
 
 router.post("/Signup", async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const nickname = req.body.nickname;
-  const profileimg = req.body.profileimg;
+  const f_profile = req.body.f_profile;
   // const nickname = req.body.nickname;
 
   try {
@@ -20,7 +22,7 @@ router.post("/Signup", async (req, res, next) => {
           email,
           password,
           nickname,
-          profileimg,
+          f_profile,
         });
       } else {
         res.json({ resultCode: false, msg: "중복된 이메일입니다" });
@@ -130,4 +132,12 @@ router.post("/Memberupdate", async (req, res, next) => {
     console.log(err);
   }
 });
+
+router.post('/img_upload', upload.single('profile_img'), function (req, res, next) {
+  console.log('/account', req.body);
+  console.log(req.file);
+  console.log(req.file.filename);
+  res.send({originalname:req.file.originalname, msg:'도착'});
+})
+
 module.exports = router;
