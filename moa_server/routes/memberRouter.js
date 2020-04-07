@@ -2,8 +2,12 @@ const express = require("express");
 const router = express.Router();
 const models = require("../models");
 const Member = require("../models").Member;
-const multer=require('multer');
-const upload=multer({dest:'profile_uploads/'});
+const multer = require("multer");
+const upload = multer({ dest: "profile_uploads/" });
+
+router.post("/getEmail", (req, res) => {
+  res.json({ email: req.session.email });
+});
 
 router.post("/Signup", async (req, res, next) => {
   const email = req.body.email;
@@ -102,27 +106,12 @@ router.post("/Deletemember", async (req, res, next) => {
   }
 });
 
-/* Router.update(
-  { title: req.body.title },
-  { returning: true, where: { id: req.params.bookId } }
-)
-  .then(function([rowsUpdate, [updatedBook]]) {
-    res.json(updatedBook);
-  })
-  .catch(next); */
-
 router.post("/Memberupdate", async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const nickname = req.body.nickname;
   const f_profile = req.body.profileimg;
-<<<<<<< HEAD
 
-  console.log(req.body);
-
-=======
-  console.log(req.session.email);
->>>>>>> 9879a05c484ca1094b4cbe607acabbb77d8b3ded
   try {
     const result = await Member.update(
       {
@@ -142,11 +131,15 @@ router.post("/Memberupdate", async (req, res, next) => {
   }
 });
 
-router.post('/img_upload', upload.single('profile_img'), function (req, res, next) {
-  console.log('/account', req.body);
+router.post("/img_upload", upload.single("profile_img"), function (
+  req,
+  res,
+  next
+) {
+  console.log("/account", req.body);
   console.log(req.file);
   console.log(req.file.filename);
-  res.send({originalname:req.file.originalname, msg:'도착'});
-})
+  res.send({ originalname: req.file.originalname, msg: "이미지 업로드 완료" });
+});
 
 module.exports = router;

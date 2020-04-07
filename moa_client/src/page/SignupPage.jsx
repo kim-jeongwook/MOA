@@ -4,14 +4,13 @@ import axios from "axios";
 axios.defaults.withCredentials = true; // 같은 origin이라 보증
 const headers = { withCredentials: true };
 
-
 class SignupPage extends Component {
-  
-  state = {     //////// 프로필 image 업로드 및 미리보기 위한 state
+  state = {
+    //////// 프로필 image 업로드 및 미리보기 위한 state
     _id: "",
-    file:'',
-    previewURL:'',
-    img_originalname:''
+    file: "",
+    previewURL: "",
+    img_originalname: "",
   };
   checkEmail = (id) => {
     var check_Email = id.search(
@@ -56,27 +55,19 @@ class SignupPage extends Component {
   };
 
   Join = async () => {
-<<<<<<< HEAD
-=======
-    const originalname=this.state.img_originalname   ////// 프로필 image 등록 후, setState로 파일의 originalname 받아옴
+    const originalname = this.state.img_originalname; ////// 프로필 image 등록 후, setState로 파일의 originalname 받아옴
 
->>>>>>> 9879a05c484ca1094b4cbe607acabbb77d8b3ded
     if (
       this.checkEmail(this._id.value) &&
       this.checkPassword(this._id.value, this._pw.value)
     ) {
       try {
         const send_param = {
-         
           email: this._id.value,
           password: this._pw.value,
           nickname: this._nickname.value,
-          f_profile: originalname,     //// DB에 originalname 으로 저장되게 함
+          f_profile: originalname, //// DB에 originalname 으로 저장되게 함
         };
-<<<<<<< HEAD
-=======
-
->>>>>>> 9879a05c484ca1094b4cbe607acabbb77d8b3ded
 
         const joinup_result = await axios.post(
           "http://localhost:8080/member/signup",
@@ -102,52 +93,49 @@ class SignupPage extends Component {
     }
   };
 
-  
   //////////////////////////////////////////
   /////프로필 이미지 업로드 기능//////////////
   ////////////////////////////////////////
   handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append('profile_img', event.target.profile_img.files[0]);
-    this.register(formData)
-  }
+    formData.append("profile_img", event.target.profile_img.files[0]);
+    this.register(formData);
+  };
   register = (regiInfo) => {
-    fetch('http://localhost:8080/member/img_upload', {
-      method:'post',
-      body: regiInfo
+    fetch("http://localhost:8080/member/img_upload", {
+      method: "post",
+      body: regiInfo,
     })
-    .then(res => res.json())
-    .then((data) => {
-      alert(data.msg);
-      this.setState({
-       img_originalname:data.originalname
-      })
-      
-    })
-  }
-
+      .then((res) => res.json())
+      .then((data) => {
+        alert(data.msg);
+        this.setState({
+          img_originalname: data.originalname,
+        });
+      });
+  };
 
   ///// 이미지 미리보기 기능, 사이즈 조절은 아직...
-  handleFileOnChange=(event)=>{
+  handleFileOnChange = (event) => {
     event.preventDefault();
-    let reader= new FileReader();
-    let file=event.target.files[0];
-    reader.onloadend=()=>{
-        this.setState({
-            file:file,
-            previewURL: reader.result
-        })
-    }
+    let reader = new FileReader();
+    let file = event.target.files[0];
+    reader.onloadend = () => {
+      this.setState({
+        file: file,
+        previewURL: reader.result,
+      });
+    };
     reader.readAsDataURL(file);
-  }
-
-  
+  };
 
   render() {
-    let profile_preview=null;
-    if(this.state.file !== ''){
-        profile_preview=<img className='profile_preview' src={this.state.previewURL}></img>
+    let profile_preview = null;
+    if (this.state.file !== "") {
+      profile_preview = (
+        <img className="profile_preview" src={this.state.previewURL}></img>
+      );
     }
     return (
       <div>
@@ -160,10 +148,24 @@ class SignupPage extends Component {
           ref={(ref) => (this._f_profile = ref)}
           placeholder="이미지.jpg"
         ></input> */}
-        <form name='accountFrm' onSubmit={this.handleSubmit} encType='multipart/form-data'>
-          <p><input ref={ref=>this._f_profile=ref} type='file' accept='image/jpg,impge/png,image/jpeg,image/gif' name='profile_img' onChange={this.handleFileOnChange}></input></p>
+        <form
+          name="accountFrm"
+          onSubmit={this.handleSubmit}
+          encType="multipart/form-data"
+        >
+          <p>
+            <input
+              ref={(ref) => (this._f_profile = ref)}
+              type="file"
+              accept="image/jpg,impge/png,image/jpeg,image/gif"
+              name="profile_img"
+              onChange={this.handleFileOnChange}
+            ></input>
+          </p>
           {profile_preview}
-          <p><input type='submit' value='사진등록'></input></p>
+          <p>
+            <input type="submit" value="사진등록"></input>
+          </p>
         </form>
         <br></br>
         닉네임 :{" "}

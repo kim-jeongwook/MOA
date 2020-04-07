@@ -42,7 +42,7 @@ app.use(
   session({
     resave: false, // 세션을 변경되지 않아도 무조건 저장할 지 정하는 값(false 권장)
     saveUninitialized: true, // 세션이 저장되기 전에 uninitialized 상태로 미리 만들어서 저장
-    secret: process.env.SESSION_SECRET_KEY, // 쿠키를 임의로 변조하는것을 방지하기 위한 값
+    secret: process.env.SESSION_SECRET_KEY, // np쿠키를 임의로 변조하는것을 방지하기 위한 값
     cookie: {
       httpOnly: true, // HttpOnly Set-Cookie 속성
       secure: false, // 쿠키 보안 설정(https 사용시 true 설정)
