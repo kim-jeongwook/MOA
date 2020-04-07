@@ -4,19 +4,23 @@ import socketio from "socket.io-client";
 import UserCam from "./room/UserCam";
 import OtherCams from "./room/OtherCams";
 import Chat from "./room/chat";
+import Time from "./room/Time";
 
 const io=socketio.connect("ws://localhost:8080"); //ip수정 및 room setting 필요
 var pc=new RTCPeerConnection();
 
 class Room extends Component{
-    state={
-        otherCams:[],
-        selfstream:null
-    }
     constructor(props){
         super(props);
         io.emit('join',this.props.roomInfo.room_id);
+
+        this.state={
+            otherCams:[],
+            selfstream:null,
+            es: new EventSource("http://localhost:8080/sse", { credentials: 'include' }),
+        }
     }
+
     componentDidMount(){
         function gotDescription(desc) {
             pc.setLocalDescription(desc);
@@ -60,6 +64,11 @@ class Room extends Component{
             pc.createOffer(gotDescription,(err)=>{});
         },function(err){});
     }
+
+    componentWillUnmount = () => {
+        this.state.es.close();
+    }
+    
     render(){
         const row = {
             display: "table",
@@ -75,6 +84,7 @@ class Room extends Component{
                     <span>미팅룸 명: {this.props.roomInfo.room_name}</span>
                     <span>인원 : {this.props.roomInfo.headcount}명</span>
                     <span>방장: {this.props.roomInfo.master}</span>
+                    <span>회의 시간: <Time es={this.state.es}/></span>
                     <button onClick={this.props.Logined} >나가기</button>
                 </div>
                 <div style={row}>
