@@ -3,13 +3,16 @@ import axios from "axios";
 import { Jumbotron, Form, Button } from "react-bootstrap";
 
 axios.defaults.withCredentials = true;
-const headers = { withCredentials: true };
 
 class UserInfo extends Component {
   Memberupdate = async () => {
     const send_param = {
+<<<<<<< HEAD
       headers,
       email: this._id.value,
+=======
+      password: this._pw.value,
+>>>>>>> 0f7541b797b3b86dcf3432c8503a4acac938c0a5
       nickname: this._nickname.value,
       profileimg: this._img.value,
       password: this._pw.value,
@@ -24,7 +27,6 @@ class UserInfo extends Component {
 
   Deletemember = async () => {
     const send_param = {
-      headers,
       email: this._id.value,
       password: this._pw.value,
     };

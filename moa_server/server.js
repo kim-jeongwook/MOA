@@ -3,6 +3,7 @@ const session = require("express-session");
 const sequelize = require("./models").sequelize;
 const connect = require("./schemas");
 const dotenv = require("dotenv");
+const sse = require("./sse");
 const cors = require("cors");
 const app = express();
 const cookieParser = require("cookie-parser");
@@ -33,6 +34,7 @@ const corsOptions = {
   origin: true, // 헤더 요청 구성, true값은 요청 origin 반영
   credentials: true, // 헤더를 전달하려면 true
 };
+
 app.use(cors(corsOptions));
 
 // session
@@ -54,9 +56,11 @@ app.use("/member", require("./routes/memberRouter"));
 app.use("/plan", require("./routes/planRouter"));
 app.use("/room", require("./routes/roomRouter"));
 
-http.listen(8080, () => {
+const server = http.listen(8080, () => {
   console.log("server ready");
 });
+
+sse(http);
 
 var room = [];
 

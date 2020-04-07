@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import axios from "axios";
 
 axios.defaults.withCredentials = true; // 같은 origin이라 보증
-const headers = { withCredentials: true };
 
 class SignupPage extends Component {
   state = {
@@ -47,6 +46,7 @@ class SignupPage extends Component {
   };
 
   Join = async () => {
+<<<<<<< HEAD
     if (
       this.checkEmail(this._id.value) &&
       this.checkPassword(this._id.value, this._pw.value)
@@ -59,6 +59,22 @@ class SignupPage extends Component {
           nickname: this._nickname.value,
           f_profile: this._f_profile.value,
         };
+=======
+    try {
+      const send_param = {
+        email: this._id.value,
+        password: this._pw.value,
+        nickname: this._nickname.value,
+        f_profile: this._f_profile.value
+      };
+
+      const joinup_result = await axios.post(
+        "http://localhost:8080/member/signup",
+        send_param
+      );
+      if (joinup_result.data.resultCode) {
+        alert(joinup_result.data.msg);
+>>>>>>> 0f7541b797b3b86dcf3432c8503a4acac938c0a5
 
         const joinup_result = await axios.post(
           "http://localhost:8080/member/signup",
