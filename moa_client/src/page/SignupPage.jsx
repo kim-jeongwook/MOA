@@ -3,9 +3,14 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true; // 같은 origin이라 보증
 
+
 class SignupPage extends Component {
+  
   state = {
     _id: "",
+    file:'',
+    previewURL:'',
+    img_originalname:''
   };
   checkEmail = (id) => {
     var check_Email = id.search(
@@ -46,35 +51,21 @@ class SignupPage extends Component {
   };
 
   Join = async () => {
-<<<<<<< HEAD
+    const originalname=this.state.img_originalname
+
     if (
       this.checkEmail(this._id.value) &&
       this.checkPassword(this._id.value, this._pw.value)
     ) {
       try {
         const send_param = {
-          headers,
+         
           email: this._id.value,
           password: this._pw.value,
           nickname: this._nickname.value,
-          f_profile: this._f_profile.value,
+          f_profile: originalname,
         };
-=======
-    try {
-      const send_param = {
-        email: this._id.value,
-        password: this._pw.value,
-        nickname: this._nickname.value,
-        f_profile: this._f_profile.value
-      };
 
-      const joinup_result = await axios.post(
-        "http://localhost:8080/member/signup",
-        send_param
-      );
-      if (joinup_result.data.resultCode) {
-        alert(joinup_result.data.msg);
->>>>>>> 0f7541b797b3b86dcf3432c8503a4acac938c0a5
 
         const joinup_result = await axios.post(
           "http://localhost:8080/member/signup",
@@ -100,17 +91,69 @@ class SignupPage extends Component {
     }
   };
 
+  
+  //////////////////////////////////////////
+  /////프로필 이미지 업로드 기능//////////////
+  ////////////////////////////////////////
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('profile_img', event.target.profile_img.files[0]);
+    this.register(formData)
+  }
+  register = (regiInfo) => {
+    fetch('http://localhost:8080/member/img_upload', {
+      method:'post',
+      body: regiInfo
+    })
+    .then(res => res.json())
+    .then((data) => {
+      alert(data.msg);
+      this.setState({
+       img_originalname:data.originalname
+      })
+      
+    })
+  }
+
+
+  ///// 이미지 미리보기 기능, 사이즈 조절은 아직...
+  handleFileOnChange=(event)=>{
+    event.preventDefault();
+    let reader= new FileReader();
+    let file=event.target.files[0];
+    reader.onloadend=()=>{
+        this.setState({
+            file:file,
+            previewURL: reader.result
+        })
+    }
+    reader.readAsDataURL(file);
+  }
+
+  
+
   render() {
+    let profile_preview=null;
+    if(this.state.file !== ''){
+        profile_preview=<img className='profile_preview' src={this.state.previewURL}></img>
+    }
     return (
       <div>
         회원가입<br></br>
         아이디 :{" "}
         <input ref={(ref) => (this._id = ref)} placeholder="아이디"></input>
+        <br />
         프로필사진 :{" "}
-        <input
+        {/* <input type='file'
           ref={(ref) => (this._f_profile = ref)}
           placeholder="이미지.jpg"
-        ></input>
+        ></input> */}
+        <form name='accountFrm' onSubmit={this.handleSubmit} encType='multipart/form-data'>
+          <p><input ref={ref=>this._f_profile=ref} type='file' accept='image/jpg,impge/png,image/jpeg,image/gif' name='profile_img' onChange={this.handleFileOnChange}></input></p>
+          {profile_preview}
+          <p><input type='submit' value='사진등록'></input></p>
+        </form>
         <br></br>
         닉네임 :{" "}
         <input
