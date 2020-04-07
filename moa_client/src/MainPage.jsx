@@ -15,46 +15,47 @@ class MainPage extends Component {
     let pageView;
 
     switch (this.props.pageValue) {
-        case "NotLogined":
-            pageView = (
-            <NotLoginedPage
-                Logined={this.props.Logined}
-                Signup={this.props.Signup}
-            />
-            );
-            break;
+      case "NotLogined":
+        pageView = (
+          <NotLoginedPage
+            Logined={this.props.Logined}
+            Signup={this.props.Signup}
+          />
+        );
+        break;
 
-        case "Logined":
-            pageView = <Posts 
-                InRoom={this.props.InRoom} 
-                CreateRoom={this.props.CreateRoom} 
-            />;
-            break;
+      case "Logined":
+        pageView = (
+          <Posts
+            InRoom={this.props.InRoom}
+            CreateRoom={this.props.CreateRoom}
+          />
+        );
+        break;
 
-        case "UserInfo":
-            pageView = <UserInfo />;
-            break;
+      case "UserInfo":
+        pageView = <UserInfo NotLogined={this.props.NotLogined} />;
+        break;
 
-        case "InRoom":
-            pageView = <Room 
-                Logined={this.props.Logined}
-                roomInfo={this.props.roomInfo} 
-            />;
-            break;
+      case "InRoom":
+        pageView = (
+          <Room Logined={this.props.Logined} roomInfo={this.props.roomInfo} />
+        );
+        break;
 
-        case "Signup":
-            pageView = <SignupPage />;
-            break;
+      case "Signup":
+        pageView = <SignupPage NotLogined={this.props.NotLogined} />;
+        break;
 
-        case "CreateRoom":
-            pageView = <CreateRoomPage Logined={this.props.Logined} />;
-            break;
+      case "CreateRoom":
+        pageView = <CreateRoomPage Logined={this.props.Logined} />;
+        break;
 
-        default:
-            // 잘못된 접근. 로그 남기고 무슨 값 들어왔는지 체크해야됨
-            // 404 페이지로 전환
-            pageView = <NotLoginedPage />;
-            break;
+      default:
+        // 잘못된 접근. 로그 남기고 무슨 값 들어왔는지 체크해야됨
+        // 404 페이지로 전환
+        pageView = <NotLoginedPage />;
+        break;
     }
 
     return <div className="mt-4">{pageView}</div>;

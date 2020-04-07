@@ -9,10 +9,11 @@ class UserInfo extends Component {
   Memberupdate = async () => {
     const send_param = {
       headers,
-
-      password: this._pw.value,
+      email: this._id.value,
       nickname: this._nickname.value,
-      profileimg: this._img.value
+      profileimg: this._img.value,
+      password: this._pw.value,
+      passwordcheck: this._pw1.value,
     };
     const result = await axios.post(
       "http://localhost:8080/member/memberupdate",
@@ -25,7 +26,7 @@ class UserInfo extends Component {
     const send_param = {
       headers,
       email: this._id.value,
-      password: this._pw.value
+      password: this._pw.value,
     };
     try {
       const result = await axios.post(
@@ -33,6 +34,10 @@ class UserInfo extends Component {
         send_param
       );
       alert(result.data.msg);
+
+      /*   if () {
+        this.props.NotLogined();
+      } */
     } catch (err) {
       console.log(err);
     }
@@ -42,32 +47,37 @@ class UserInfo extends Component {
       <div>
         <Jumbotron className="float my-4 mr-5">
           내정보<br></br>
-          프로필사진 :{" "}
-          <input
-            ref={ref => (this._img = ref)}
-            placeholder="이미지.jpg"
-          ></input>
+          아이디: {""}
+          <input ref={(ref) => (this._id = ref)} placeholder="아이디"></input>
           <br></br>
           닉네임 :{" "}
           <input
-            ref={ref => (this._nickname = ref)}
+            ref={(ref) => (this._nickname = ref)}
             placeholder="닉네임"
+          ></input>
+          프로필사진 :{" "}
+          <input
+            ref={(ref) => (this._img = ref)}
+            placeholder="이미지.jpg"
           ></input>
           <br></br>
           비밀번호 :{" "}
-          <input ref={ref => (this._pw = ref)} placeholder="비밀번호"></input>
+          <input ref={(ref) => (this._pw = ref)} placeholder="비밀번호"></input>
           <br></br>
           비밀번호확인 :{" "}
-          <input ref={ref => (this._pw1 = ref)} placeholder="비밀번호"></input>
+          <input
+            ref={(ref) => (this._pw1 = ref)}
+            placeholder="비밀번호"
+          ></input>
           <br></br>
           <br></br>
           <Button onClick={this.Memberupdate} variant="primary">
             정보 수정
           </Button>
           <br></br>
-          <input ref={ref => (this._id = ref)} placeholder="아이디써"></input>
+          <input ref={(ref) => (this._id = ref)} placeholder="아이디써"></input>
           <br></br>
-          <input ref={ref => (this._pw = ref)} placeholder="비밀번호"></input>
+          <input ref={(ref) => (this._pw = ref)} placeholder="비밀번호"></input>
           <Button onClick={this.Deletemember} variant="primary">
             회원 탈퇴
           </Button>
