@@ -7,12 +7,8 @@ axios.defaults.withCredentials = true;
 class UserInfo extends Component {
   Memberupdate = async () => {
     const send_param = {
-<<<<<<< HEAD
-      headers,
+   
       email: this._id.value,
-=======
-      password: this._pw.value,
->>>>>>> 0f7541b797b3b86dcf3432c8503a4acac938c0a5
       nickname: this._nickname.value,
       profileimg: this._img.value,
       password: this._pw.value,
