@@ -112,7 +112,7 @@ router.post("/Memberupdate", async (req, res, next) => {
   const email = req.session.email;
   const password = req.body.password;
   const nickname = req.body.nickname;
-  const profileimg = req.body.profileimg;
+  const f_profile = req.body.profileimg;
   console.log(req.session.email);
   try {
     await Member.update(
@@ -120,7 +120,7 @@ router.post("/Memberupdate", async (req, res, next) => {
         email,
         password,
         nickname,
-        profileimg,
+        f_profile,
       },
       { where: { email } }
     );
