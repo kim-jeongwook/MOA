@@ -1,4 +1,6 @@
+const SSE = require('sse-nodejs');
 const express = require("express");
+const session = require("express-session");
 const router = express.Router();
 const Room = require("../models").Room;
 
@@ -10,7 +12,9 @@ class cRoom{
         this.is_secret = is_secret;
         this.headcount = 1;
         this.master = master;
-        this.clients = [];    // 여기에 소켓, 닉네임 정도 일단 넣기
+        this.timestamp = new Date();
+        this.clients = [];    
+        this.sse = [];
     }
 }
 
@@ -18,15 +22,48 @@ class cRoom{
 let rooms = [];
 
 ////////////////////////////////////////////////////////////////////////
+// room time req(SSE)
+////////////////////////////////////////////////////////////////////////
+router.get('/sse', (req,res) => {
+    const app = SSE(res);
+    let time;
+    
+    if(rooms.length){
+        const result = rooms.filter((room) => {
+            return room.room_id.toString() === req.query.t;
+        });
+        
+        app.sendEvent("clients", () => {
+            result[0].sse.push(res);
+            return result[0].clients;;
+        }, 500);
+
+        app.sendEvent("time", () => {
+            time = new Date() - result[0].timestamp;
+
+            const Hour = Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minute = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
+            const second = Math.floor((time % (1000 * 60)) / 1000);
+
+            return ((Hour >= 10? Hour:"0"+Hour) + ":" +
+                        (minute >= 10? minute:"0"+minute) + ":" + 
+                        (second >= 10? second:"0"+second));
+        },1000);
+    }
+});
+
+////////////////////////////////////////////////////////////////////////
 // room list req
 ////////////////////////////////////////////////////////////////////////
 router.post("/enter", async (req, res) => {
     const enter_room = rooms.filter((value) => { return value.room_id === req.body.id });
-    console.log(enter_room);
+    
     // 활성화 된 방이면 그냥 들어가면 됨
     if(enter_room.length){
         // 있는 방 찾아 들어가기
         enter_room[0].headcount += 1;
+        enter_room[0].clients.push(req.session.email);
+
         res.json({
             resultCode: true, 
             msg: { 
@@ -42,8 +79,9 @@ router.post("/enter", async (req, res) => {
             const find_result = await Room.findOne({ where: { id: req.body.id }});
             if(find_result){
                 const RoomItem = new cRoom(find_result.id, find_result.room_name, find_result.is_secret, find_result.master_id);
+                RoomItem.clients.push(req.session.email);
                 rooms.push(RoomItem);
-                console.log(rooms);
+    
                 res.json({ 
                     resultCode: true, 
                     msg: { 

@@ -5,6 +5,7 @@ import UserCam from "./room/UserCam";
 import OtherCams from "./room/OtherCams";
 import Chat from "./room/chat";
 import Time from "./room/Time";
+import ClientList from "./room/ClientList";
 
 const io=socketio.connect("ws://localhost:8080"); //ip수정 및 room setting 필요
 var pc=new RTCPeerConnection();
@@ -17,7 +18,7 @@ class Room extends Component{
         this.state={
             otherCams:[],
             selfstream:null,
-            es: new EventSource("http://localhost:8080/sse", { credentials: 'include' }),
+            es: new EventSource("http://localhost:8080/room/sse?t="+this.props.roomInfo.room_id, { credentials: 'include' }),
         }
     }
 
@@ -68,7 +69,7 @@ class Room extends Component{
     componentWillUnmount = () => {
         this.state.es.close();
     }
-    
+
     render(){
         const row = {
             display: "table",
@@ -93,6 +94,9 @@ class Room extends Component{
                     </div>
                     <div style={column}>
                         {this.state.otherCams}
+                    </div>
+                    <div style={column}>
+                        <ClientList es={this.state.es} />
                     </div>
                     <div style={column}>
                         <Chat room={this.props.roomInfo.room_id} io={io}/>

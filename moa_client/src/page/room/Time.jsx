@@ -5,21 +5,25 @@ class Time extends Component{
         time: "00:00:00",
     }
 
+    /* constructor(props){
+        super(props);
+        
+    } */
     /////////////////////////////////////////////////////////////////////////////
-    // sse 시간 받기
+    // 시간 받기
     /////////////////////////////////////////////////////////////////////////////
-    sse = () => {
-        this.props.es.onmessage = (e) => {
+    req_time = () => {
+        this.props.es.addEventListener("time", (result) => {
             this.setState({
-                time: e.data,
+                time: result.data,
             });
-        };
+        });
     }
 
     componentDidMount(){
-        this.sse();
+        this.req_time();
     }
-
+ 
     render(){
         return (
             <span>

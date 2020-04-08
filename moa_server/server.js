@@ -3,7 +3,6 @@ const session = require("express-session");
 const sequelize = require("./models").sequelize;
 const connect = require("./schemas");
 const dotenv = require("dotenv");
-const sse = require("./sse");
 const cors = require("cors");
 const app = express();
 const cookieParser = require("cookie-parser");
@@ -59,8 +58,6 @@ app.use("/room", require("./routes/roomRouter"));
 const server = http.listen(8080, () => {
   console.log("server ready");
 });
-
-sse(http);
 
 var room = [];
 
