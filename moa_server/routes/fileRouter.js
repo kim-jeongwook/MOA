@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const multer=require('multer');
 const upload=multer({dest:'uploads/'});
+const path=require("path");
+const fs=require("fs");
+const mime=require("mime");
 const MeetingLog=require('../schemas/MeetingLog');
 
 router.post('/file', upload.single('profile_img'), function (req,res, next) {
@@ -27,5 +30,13 @@ router.post('/chat', async (req, res)=>{
     } catch(err){
         console.log(err);
     }
+})
+
+router.post('/download', async (req, res)=>{
+    const p=path.resolve("uploads/"+req.body.fn);
+    const mimeType=mime.getType(req.body.kind);
+    res.setHeader("Content-Type", mimeType);
+    var file=fs.ReadStream(p);
+    file.pipe(res);
 })
 module.exports = router;
