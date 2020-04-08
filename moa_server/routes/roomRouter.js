@@ -56,7 +56,7 @@ router.get('/sse', (req,res) => {
 ////////////////////////////////////////////////////////////////////////
 router.post("/enter", async (req, res) => {
     const enter_room = rooms.filter((value) => { return value.room_id === req.body.id });
-    
+    console.log(req.cookies.io); // ***socketid 출력(c room에 막 넣으면 안될 것같아서 접근만 해놓았습니다... 죄송합니다)
     // 활성화 된 방이면 그냥 들어가면 됨
     if(enter_room.length){
         // 있는 방 찾아 들어가기
