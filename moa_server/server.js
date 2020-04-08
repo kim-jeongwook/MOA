@@ -5,14 +5,12 @@ const connect = require("./schemas");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const app = express();
-const cookieParser = require("cookie-parser");
 
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cookieParser());
 
 // env_환경변수
 dotenv.config({ path: "./.env" });

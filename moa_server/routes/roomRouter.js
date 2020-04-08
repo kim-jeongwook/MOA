@@ -1,6 +1,5 @@
 const SSE = require('sse-nodejs');
 const express = require("express");
-const session = require("express-session");
 const router = express.Router();
 const Room = require("../models").Room;
 
