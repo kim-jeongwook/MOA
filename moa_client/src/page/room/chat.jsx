@@ -29,7 +29,6 @@ class ChatForm extends Component {
         "http://localhost:8080/file/chat",
         send_param
       );
-      alert(result.data.msg);
     } catch (err) {
       console.log(err);
     }
@@ -78,6 +77,7 @@ class ChatForm extends Component {
               name: this.state.name,
               message: this.state.message,
               filename: data.originalname,
+              originalname: this.state.filename
             });
             this.chatSave();
             this.a.value = "";
@@ -139,18 +139,23 @@ class Chat extends Component {
   }
 
   // 파일 다운로드
-  downloadEmployeeData = () => {
-    // 아직 미완성.. 서버에 있는 파일 path 받아오는 법을 모르겠음
-    fetch("http://localhost:8080/download", { credentials: "include" }).then(
-      (response) => {
-        response.blob().then((blob) => {
-          let url = window.URL.createObjectURL(blob);
+  downloadEmployeeData = (file, origin) => {
+    fetch("http://localhost:8080/file/download", {
+      method:"post",
+      headers:{'Content-Type': 'application/json'},
+      body: JSON.stringify({fn:file, kind:origin}),
+      credentials: "include" 
+    })
+    .then((response) => {
+      response.blob()
+      .then((blob) => {
+          console.log(blob);
           let a = document.createElement("a");
-          a.href = url;
-          a.download = "employees.json"; // 다운로드 되는 파일 예시
+          let url=window.URL.createObjectURL(blob);
+          a.href=url;
+          a.download="파일";
           a.click();
         });
-        //window.location.href = response.url;
       }
     );
   };
@@ -161,11 +166,7 @@ class Chat extends Component {
         <span>{e.name}</span>
         <span>: {e.message}</span>
         <span>: {e.filename}</span>
-        {/*<Link>
-                to="/download"
-                onClick={this.downloadEmployeeData}>
-                <span>: {e.filename}</span>
-                </Link>*/}
+        <span onClick={this.downloadEmployeeData.bind(this, e.originalname, e.filename)}>다운로드</span>
         <p style={{ clear: "both" }} />
       </div>
     ));
