@@ -22,7 +22,7 @@ dotenv.config({ path: "./.env" });
 sequelize.sync();
 
 // mongoose
-//connect();
+connect();
 
 // cors
 /*
@@ -67,7 +67,7 @@ io.on("connection", (socket) => {
   socket.on("join", (data) => {
     socket.join(data);
     socket.room_id = data;
-    room[socket.room_id] = [];
+    if(!room[socket.room_id]) room[socket.room_id] = [];
   });
   socket.on("onicecandidate", (data) => {
     socket.broadcast.to(socket.room_id).emit("onicecandidate", data);
@@ -77,14 +77,15 @@ io.on("connection", (socket) => {
   });
   socket.on("disconnect", (evt) => {
     if (socket.room_id) {
-      socket.broadcast
-        .to(socket.room_id)
-        .emit("out", room[socket.room_id][socket.id]);
+      let itemToFind = room[socket.room_id].find(function(item) {return item.socket === socket.id});
+      socket.broadcast.to(socket.room_id).emit("out", room[socket.room_id][room[socket.room_id].indexOf(itemToFind)].media);
+      room[socket.room_id].splice(room[socket.room_id].indexOf(itemToFind),1);
+      console.log(room[socket.room_id]);
       socket.leave(socket.room_id);
     }
   });
   socket.on("stream", (data) => {
-    room[socket.room_id][socket.id] = data;
+    room[socket.room_id].push({socket:socket.id,media:data});
   });
   socket.on("chat-msg", (msg) => {
     io.to(socket.room_id).emit("chat-msg", msg);
