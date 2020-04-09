@@ -124,9 +124,9 @@ router.post("/Memberupdate", async (req, res, next) => {
   try {
     const result = await Member.update(
       {
-        password:password,
-        nickname:nickname,
-        f_profile:f_profile
+        password: password,
+        nickname: nickname,
+        f_profile: f_profile,
       },
       { where: { email } }
     );
