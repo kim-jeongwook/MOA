@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Button, Table } from "react-bootstrap";
+import { Jumbotron, Card, Row, Col } from "react-bootstrap";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../redux/reduxFun";
 
@@ -46,37 +46,65 @@ class Posts extends Component{
     }
 
     render(){
-        const public_rooms = this.state.public_rooms.length === 0?
-            <tr><td className="text-center" colSpan="7">공개된 미팅룸이 없습니다</td></tr> : 
-            this.state.public_rooms.map((room) => {
-                return (<tr onClick={() => this.req_enterRoom(room.id)} key={room.id}>
-                    <td>{room.id}</td>
-                    <td>{room.room_name}</td>
-                    <td>{room.room_url}</td>
-                    <td>{room.is_secret}</td>
-                    <td>{room.password}</td>
-                    <td>{room.master_id}</td>
-                    <td>{room.createdAt}</td>
-                </tr>);
-            });
+        const my_rooms = this.state.my_rooms.length === 0?
+        <Col className="text-center">공개된 미팅룸이 없습니다</Col> : 
+        this.state.my_rooms.map((room) => {
+            return (
+                <Col sm={3}> 
+                    <Card className="my-3" onClick={() => this.req_enterRoom(room.id)} key={room.id}>
+                        <Card.Body>
+                            <Card.Title>{room.room_name}</Card.Title>
+                            <Card.Text>url : {room.room_url}</Card.Text>
+                            <Card.Text>비밀방 여부 : {room.is_secret}</Card.Text>
+                            <Card.Text>방장 : {room.master_id}</Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            );
+        });
 
-            const my_rooms = this.state.my_rooms.length === 0?
-            <tr><td className="text-center" colSpan="7">참가한 미팅룸이 없습니다</td></tr> : 
-            this.state.my_rooms.map((room) => {
-                return (<tr onClick={() => this.req_enterRoom(room.id)} key={room.id}>
-                    <td>{room.id}</td>
-                    <td>{room.room_name}</td>
-                    <td>{room.room_url}</td>
-                    <td>{room.is_secret}</td>
-                    <td>{room.password}</td>
-                    <td>{room.master_id}</td>
-                    <td>{room.createdAt}</td>
-                </tr>);
-            });
+        const public_rooms = this.state.public_rooms.length === 0?
+        <Col className="text-center">공개된 미팅룸이 없습니다</Col> : 
+        this.state.public_rooms.map((room) => {
+            return (
+                <Col sm={3}> 
+                    <Card className="my-3" onClick={() => this.req_enterRoom(room.id)} key={room.id}>
+                        <Card.Body>
+                            <Card.Title>{room.room_name}</Card.Title>
+                            <Card.Text>url : {room.room_url}</Card.Text>
+                            <Card.Text>비밀방 여부 : {room.is_secret}</Card.Text>
+                            <Card.Text>방장 : {room.master_id}</Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            );
+        });
        
         return(
-            <Container>
-                <Button onClick={this.props.CreateRoom} variant="outline-dark">+ 미팅룸 만들기</Button>
+            <div>
+                <Jumbotron className="mx-4">
+                    <h1>내가 생성한 미팅방</h1><hr />
+                    <Row>
+                        {my_rooms}
+                    </Row>
+                </Jumbotron>
+                <hr />
+                <Jumbotron className="mx-4">
+                    <h1>공개 미팅방</h1><hr />
+                    <Row>
+                        {public_rooms}
+                    </Row>
+                </Jumbotron>
+            </div>
+            
+        );
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);
+
+
+{/* <Button onClick={this.props.CreateRoom} variant="outline-dark">+ 미팅룸 만들기</Button>
                 <h1>내가 참여한 미팅룸</h1>
                 <Table bordered hover className="my-4">
                     <thead>
@@ -111,10 +139,4 @@ class Posts extends Component{
                     <tbody>
                         {public_rooms}
                     </tbody>
-                </Table>
-            </Container>
-        );
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Posts);
+                </Table> */}
