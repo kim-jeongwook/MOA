@@ -69,7 +69,8 @@ class SignupPage extends Component {
   //////////////////////////////////////////
   /////회원가입 기능 //////////////
   ////////////////////////////////////////
-  Join = async () => {
+  Join = async (event) => {
+    this.handleSubmit();
     const originalname = this.state.img_originalname; ////// 프로필 image 등록 후, setState로 파일의 originalname 받아옴
 
     if (
@@ -112,9 +113,8 @@ class SignupPage extends Component {
   /////프로필 이미지 업로드 기능//////////////
   ////////////////////////////////////////
   handleSubmit = (event) => {
-    event.preventDefault();
     const formData = new FormData();
-    formData.append("profile_img", event.target.profile_img.files[0]);
+    formData.append("profile_img", this._f_profile.files[0]);
     this.register(formData);
   };
   register = (regiInfo) => {
@@ -128,12 +128,14 @@ class SignupPage extends Component {
         this.setState({
           img_originalname: data.originalname,
         });
+        
       });
   };
 
   ///// 이미지 미리보기 기능, 사이즈 조절은 아직...
   handleFileOnChange = (event) => {
     event.preventDefault();
+    
     let reader = new FileReader();
     let file = event.target.files[0];
     reader.onloadend = () => {
@@ -182,7 +184,10 @@ class SignupPage extends Component {
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group controlId="formBasicEmail">
+                <Form.Group controlId="formBasicEmail"
+                 encType="multipart/form-data"
+                 
+                >
                   <Form.Label>프로필사진</Form.Label>
                   <Form.Control
                     ref={(ref) => (this._f_profile = ref)}
@@ -190,22 +195,18 @@ class SignupPage extends Component {
                     accept="image/jpg,impge/png,image/jpeg,image/gif"
                     name="profile_img"
                     onChange={this.handleFileOnChange}
+
                   />
+                  {profile_preview}
+                  
+                
+                  <Form.Control/>
                 </Form.Group>
                 {/* <input type='file'
                   ref={(ref) => (this._f_profile = ref)}
                   placeholder="이미지.jpg"
                 ></input> */}
-                <form
-                  name="accountFrm"
-                  onSubmit={this.handleSubmit}
-                  encType="multipart/form-data"
-                >
-                  {profile_preview}
-                  <p>
-                    <input type="submit" value="사진등록"></input>
-                  </p>
-                </form>
+                
               </Col>
             </Row>
             <Form.Group controlId="formBasicPassword">

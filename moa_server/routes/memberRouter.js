@@ -115,6 +115,7 @@ router.post("/Deletemember", async (req, res, next) => {
 
 router.post("/Memberupdate", async (req, res, next) => {
   //<<----회원정보수정 기능
+  console.log(req.body.profileimg);
   const email = req.body.email;
   const password = req.body.password;
   const nickname = req.body.nickname;
@@ -123,9 +124,9 @@ router.post("/Memberupdate", async (req, res, next) => {
   try {
     const result = await Member.update(
       {
-        password,
-        nickname,
-        f_profile,
+        password:password,
+        nickname:nickname,
+        f_profile:f_profile
       },
       { where: { email } }
     );
@@ -145,7 +146,7 @@ router.post("/img_upload", upload.single("profile_img"), function (
   res,
   next
 ) {
-  console.log("/account", req.body);
+  console.log("/img_upload", req.body);
   console.log(req.file);
   console.log(req.file.filename);
   res.send({ originalname: req.file.originalname, msg: "이미지 업로드 완료" });

@@ -81,17 +81,18 @@ class UserInfo extends Component {
   /////회원 정보 수정 기능//////////////
   ////////////////////////////////////////
   Memberupdate = async () => {
-    const originalname = this.state.img_originalname; ////// 프로필 image 등록 후, setState로 파일의 originalname 받아옴
+    this.handleSubmit();
+     ////// 프로필 image 등록 후, setState로 파일의 originalname 받아옴
     if (this.checkPassword(this._pw.value)) {
       try {
         const send_param = {
           headers,
           email: this._id.value,
           nickname: this._nickname.value,
-          profileimg: originalname, //// DB에 originalname 으로 저장되게 함
+          profileimg: this.state.img_originalname, //// DB에 originalname 으로 저장되게 함
           password: this._pw.value,
         };
-
+        
         const result = await axios.post(
           "http://localhost:8080/member/memberupdate",
           send_param
@@ -137,9 +138,9 @@ class UserInfo extends Component {
   /////프로필 이미지 업로드 기능//////////////
   ////////////////////////////////////////
   handleSubmit = (event) => {
-    event.preventDefault();
+    
     const formData = new FormData();
-    formData.append("profile_img", event.target.profile_img.files[0]);
+    formData.append("profile_img", this.change_pro_img.files[0]);
     this.register(formData);
   };
   register = (regiInfo) => {
@@ -153,6 +154,7 @@ class UserInfo extends Component {
         this.setState({
           img_originalname: data.originalname,
         });
+        console.log(this.state.img_originalname)
       });
   };
 
@@ -224,7 +226,7 @@ class UserInfo extends Component {
 
                 {profile_preview}
 
-                <Form.Control type="submit" value="사진등록"></Form.Control>
+                
               </Form.Group>
             </Row>
             <Form.Group controlId="formBasicPassword">
