@@ -73,7 +73,7 @@ router.post("/enter", async (req, res) => {
     return value.room_id === req.body.id;
   });
   // 활성화 된 방이면 그냥 들어가면 됨
-  if (enter_room !== -1) {
+  if (enter_room !== -1 && enter_room !== undefined) {
     // 있는 방 찾아 들어가기
     rooms[enter_room].headcount = rooms[enter_room].clients.length + 1;
     rooms[enter_room].clients.push({
@@ -136,7 +136,6 @@ router.get("/", async (req, res) => {
   try {
     // 자기 방만 나올수 있도록 쿼리
     const find_result = await Room.findAll({ where: { is_secret: false } });
-
     res.json({
       resultCode: true,
       msg: {
@@ -147,6 +146,7 @@ router.get("/", async (req, res) => {
       },
     });
   } catch (err) {
+    throw err;
     console.log(err);
     res.json({ resultCode: false, msg: "방 불러오기 오류" });
   }
@@ -257,4 +257,4 @@ io.on("connection", (socket) => {
   });
 });
 
-module.exports = Room;
+module.exports = router;
