@@ -18,6 +18,9 @@ class UserInfo extends Component {
     id: "",
   };
 
+  //////////////////////////////////////////
+  /////회원 정보수정, 탈퇴시 로그인 유지 기능//////////////
+  ////////////////////////////////////////
   getEmail = async () => {
     try {
       const result = await axios.post("http://localhost:8080/member/getEmail", {
@@ -34,24 +37,72 @@ class UserInfo extends Component {
   componentDidMount() {
     this.getEmail();
   }
+  /////////////////////////////////////////////////////////////
+  /////회원 정보수정시 정규식을 이용한 비밀번호 로직//////////////
+  //////////////////////////////////////////////////////////////
+  checkPassword = (password) => {
+    if (!/^[a-zA-Z0-9]{8,15}$/.test(password)) {
+      alert("숫자와 영문자 조합으로 8~15자리를 사용해야 합니다.");
 
+      return false;
+    }
+    var checkNumber = password.search(/[0-9]/g);
+
+    var checkEnglish = password.search(/[a-z]/gi);
+
+    https: if (checkNumber < 0 || checkEnglish < 0) {
+      alert("비밀번호는 숫자와 영문자를 혼용하여야 합니다.");
+
+      return false;
+    }
+
+    if (/(\w)\1\1\1/.test(password)) {
+      alert("비밀번호는 444같은 문자를 4번 이상 사용하실 수 없습니다.");
+
+      return false;
+    }
+
+    if (this._pw.value !== this._pw1.value) {
+      alert("비밀번호를 다릅니다 다시 확인하세영");
+      return false;
+    }
+
+    return true;
+  };
+  //////////////////////////////////////////
+  /////회원 정보 수정 기능//////////////
+  ////////////////////////////////////////
   Memberupdate = async () => {
     const originalname = this.state.img_originalname; ////// 프로필 image 등록 후, setState로 파일의 originalname 받아옴
+    if (this.checkPassword(this._pw.value)) {
+      try {
+        const send_param = {
+          headers,
+          email: this._id.value,
+          nickname: this._nickname.value,
+          profileimg: originalname, //// DB에 originalname 으로 저장되게 함
+          password: this._pw.value,
+        };
 
-    const send_param = {
-      headers,
-      email: this._id.value,
-      nickname: this._nickname.value,
-      profileimg: originalname, //// DB에 originalname 으로 저장되게 함
-      password: this._pw.value,
-    };
-
-    const result = await axios.post(
-      "http://localhost:8080/member/memberupdate",
-      send_param
-    );
-    alert(result.data.msg);
+        const result = await axios.post(
+          "http://localhost:8080/member/memberupdate",
+          send_param
+        );
+        alert(result.data.msg);
+        if (result.data.resultCode) {
+          alert("회원정보 수정 성공");
+        } else {
+          alert("다시 입력하세요.");
+        }
+      } catch (err) {
+        // 에러 처리
+        console.log(err);
+      }
+    }
   };
+  //////////////////////////////////////////
+  /////회원 탈퇴 기능//////////////
+  ////////////////////////////////////////
 
   Deletemember = async () => {
     const send_param = {
@@ -141,10 +192,10 @@ class UserInfo extends Component {
           ></input>{" "}
           <br></br>
           비밀번호 :
-          <input ref={(ref) => (this._pw = ref)} placeholder="비밀번호"></input>
-          <br></br>
+          <input  type="password" ref={(ref) => (this._pw = ref)} placeholder="비밀번호"></input>
+          <br></br> 
           비밀번호확인 :
-          <input
+          <input type="password"
             ref={(ref) => (this._pw1 = ref)}
             placeholder="비밀번호확인"
           ></input>
@@ -154,7 +205,7 @@ class UserInfo extends Component {
             정보 수정
           </Button>
           <br></br>
-          <input
+          <input type="password"
             ref={(ref) => (this._pw2 = ref)}
             placeholder="비밀번호"
           ></input>

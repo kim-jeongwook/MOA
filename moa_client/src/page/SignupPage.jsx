@@ -12,6 +12,9 @@ class SignupPage extends Component {
     previewURL: "",
     img_originalname: "",
   };
+  /////////////////////////////////////////////////////////////////
+  /////회원가입시 아이디를 이메일 형식으로 제한하는 기능//////////////
+  //////////////////////////////////////////////////////////////////
   checkEmail = (id) => {
     var check_Email = id.search(
       /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
@@ -23,13 +26,21 @@ class SignupPage extends Component {
     }
     return true;
   };
-
+  ////////////////////////////////////////////////////////////
+  /////회원가입시 정규식을 이용한 비밀번호 로직  //////////////
+  ///////////////////////////////////////////////////////////
   checkPassword = (id, password) => {
+    if (!/^[a-zA-Z0-9]{8,15}$/.test(password)) {
+      alert("숫자와 영문자 조합으로 8~15자리를 사용해야 합니다.");
+
+      return false;
+    }
+
     var checkNumber = password.search(/[0-9]/g);
 
     var checkEnglish = password.search(/[a-z]/gi);
 
-    if (checkNumber < 0 || checkEnglish < 0) {
+    https: if (checkNumber < 0 || checkEnglish < 0) {
       alert("비밀번호는 숫자와 영문자를 혼용하여야 합니다.");
 
       return false;
@@ -54,6 +65,9 @@ class SignupPage extends Component {
     return true;
   };
 
+  //////////////////////////////////////////
+  /////회원가입 기능 //////////////
+  ////////////////////////////////////////
   Join = async () => {
     const originalname = this.state.img_originalname; ////// 프로필 image 등록 후, setState로 파일의 originalname 받아옴
 
@@ -175,10 +189,18 @@ class SignupPage extends Component {
         ></input>
         <br></br>
         비밀번호 :{" "}
-        <input ref={(ref) => (this._pw = ref)} placeholder="비밀번호"></input>
+        <input
+          type="password"
+          ref={(ref) => (this._pw = ref)}
+          placeholder="비밀번호"
+        ></input>
         <br></br>
         비밀번호확인 :{" "}
-        <input ref={(ref) => (this._pw1 = ref)} placeholder="비밀번호"></input>
+        <input
+          type="password"
+          ref={(ref) => (this._pw1 = ref)}
+          placeholder="비밀번호"
+        ></input>
         <br></br>
         <button onClick={this.Join}>회원가입</button>
       </div>

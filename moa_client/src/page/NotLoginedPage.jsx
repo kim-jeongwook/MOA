@@ -5,6 +5,9 @@ import axios from "axios";
 axios.defaults.withCredentials = true; // 같은 origin이라 보증
 
 class NotLoginedPage extends Component {
+  //////////////////////////////////////////
+  /////로그인 기능 //////////////
+  ////////////////////////////////////////
   Logined = async () => {
     const send_param = {
       email: this._id.value,
@@ -29,6 +32,9 @@ class NotLoginedPage extends Component {
     }
   };
 
+  //////////////////////////////////////////
+  /////새로고침시 로그인 유지기능//////////////
+  ////////////////////////////////////////
   Keeplogin = async () => {
     try {
       const result = await axios.post("http://localhost:8080/member/Keeplogin");

@@ -6,10 +6,12 @@ const multer = require("multer");
 const upload = multer({ dest: "profile_uploads/" });
 
 router.post("/getEmail", (req, res) => {
+  //<<----회원정보수정,탈퇴시 이메일 가져오는 기능
   res.json({ email: req.session.email });
 });
 
 router.post("/Signup", async (req, res, next) => {
+  //<<----회원가입기능
   const email = req.body.email;
   const password = req.body.password;
   const nickname = req.body.nickname;
@@ -43,12 +45,13 @@ router.post("/Signup", async (req, res, next) => {
 });
 
 router.post("/Login", async (req, res, next) => {
+  //<<----로그인기능
   const id = req.body.id;
   const email = req.body.email;
   const password = req.body.password;
 
   try {
-    const search_result = await Member.findOne({ where: { email, password } });
+    const search_result = await Member.findOne({ where: { email, password } }); //db에서 맞는 이메일,비밀번호찾아 검증
     if (!search_result) {
       res.json({ resultCode: false, msg: "다시 로그인하세요" });
     } else {
@@ -67,7 +70,8 @@ router.post("/Login", async (req, res, next) => {
 });
 
 router.post("/Keeplogin", (req, res) => {
-  console.log(req.session.uid);
+  //<<----새로고침시 로그인을 유지하는 기능
+  console.log(req.session.uid); //<<----세션의 유무를 가지고 유지
   if (req.session.email) {
     res.json({ resultCode: true });
   } else {
@@ -76,18 +80,21 @@ router.post("/Keeplogin", (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
+  //<<----로그아웃 기능
   req.session.destroy(() => {
     res.json({ message: "로그아웃됨" });
   });
 });
 
 router.post("/Deletemember", async (req, res, next) => {
+  //<<----회원탈퇴 기능
   const email = req.body.email;
   const password = req.body.password;
 
   try {
     console.log(req.body.email);
     const search_result = await Member.destroy({
+      //db삭제
       where: { email, password },
     });
     if (!search_result) {
@@ -107,6 +114,7 @@ router.post("/Deletemember", async (req, res, next) => {
 });
 
 router.post("/Memberupdate", async (req, res, next) => {
+  //<<----회원정보수정 기능
   const email = req.body.email;
   const password = req.body.password;
   const nickname = req.body.nickname;
@@ -132,6 +140,7 @@ router.post("/Memberupdate", async (req, res, next) => {
 });
 
 router.post("/img_upload", upload.single("profile_img"), function (
+  //<<----프로필 이미지 업로드 기능
   req,
   res,
   next
