@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { Jumbotron, Form, Button, Row, Col } from "react-bootstrap";
 
 axios.defaults.withCredentials = true; // 같은 origin이라 보증
 const headers = { withCredentials: true };
@@ -151,58 +152,85 @@ class SignupPage extends Component {
         <img className="profile_preview" src={this.state.previewURL}></img>
       );
     }
+    const joinbtnStyle = {
+      textAlign: "center",
+    };
+
+    const buttonStyle = {
+      width: "300px",
+    };
     return (
       <div>
-        회원가입<br></br>
-        아이디 :{" "}
-        <input ref={(ref) => (this._id = ref)} placeholder="아이디"></input>
-        <br />
-        프로필사진 :{" "}
-        {/* <input type='file'
-          ref={(ref) => (this._f_profile = ref)}
-          placeholder="이미지.jpg"
-        ></input> */}
-        <form
-          name="accountFrm"
-          onSubmit={this.handleSubmit}
-          encType="multipart/form-data"
-        >
-          <p>
-            <input
-              ref={(ref) => (this._f_profile = ref)}
-              type="file"
-              accept="image/jpg,impge/png,image/jpeg,image/gif"
-              name="profile_img"
-              onChange={this.handleFileOnChange}
-            ></input>
-          </p>
-          {profile_preview}
-          <p>
-            <input type="submit" value="사진등록"></input>
-          </p>
-        </form>
-        <br></br>
-        닉네임 :{" "}
-        <input
-          ref={(ref) => (this._nickname = ref)}
-          placeholder="닉네임"
-        ></input>
-        <br></br>
-        비밀번호 :{" "}
-        <input
-          type="password"
-          ref={(ref) => (this._pw = ref)}
-          placeholder="비밀번호"
-        ></input>
-        <br></br>
-        비밀번호확인 :{" "}
-        <input
-          type="password"
-          ref={(ref) => (this._pw1 = ref)}
-          placeholder="비밀번호"
-        ></input>
-        <br></br>
-        <button onClick={this.Join}>회원가입</button>
+        <Jumbotron className="float my-4 mr-5">
+          <Form>
+            내정보<br></br>
+            <Row>
+              <Col>
+                <Form.Group controlId="formBasicEmail">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    ref={(ref) => (this._id = ref)}
+                    placeholder="아이디"
+                  ></Form.Control>
+                </Form.Group>
+                <Form.Group controlId="formBasicEmail">
+                  <Form.Label>닉네임</Form.Label>
+                  <Form.Control
+                    ref={(ref) => (this._nickname = ref)}
+                    placeholder="닉네임"
+                  />
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group controlId="formBasicEmail">
+                  <Form.Label>프로필사진</Form.Label>
+                  <Form.Control
+                    ref={(ref) => (this._f_profile = ref)}
+                    type="file"
+                    accept="image/jpg,impge/png,image/jpeg,image/gif"
+                    name="profile_img"
+                    onChange={this.handleFileOnChange}
+                  />
+                </Form.Group>
+                {/* <input type='file'
+                  ref={(ref) => (this._f_profile = ref)}
+                  placeholder="이미지.jpg"
+                ></input> */}
+                <form
+                  name="accountFrm"
+                  onSubmit={this.handleSubmit}
+                  encType="multipart/form-data"
+                >
+                  {profile_preview}
+                  <p>
+                    <input type="submit" value="사진등록"></input>
+                  </p>
+                </form>
+              </Col>
+            </Row>
+            <Form.Group controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                ref={(ref) => (this._pw = ref)}
+                placeholder="비밀번호"
+              />
+            </Form.Group>
+            <Form.Group controlId="formBasicPassword">
+              <Form.Label>check Password</Form.Label>
+              <Form.Control
+                type="password"
+                ref={(ref) => (this._pw1 = ref)}
+                placeholder="비밀번호"
+              />
+            </Form.Group>
+            <div style={joinbtnStyle}>
+              <Button style={buttonStyle} onClick={this.Join} variant="primary">
+                회원가입
+              </Button>
+            </div>
+          </Form>
+        </Jumbotron>
       </div>
     );
   }

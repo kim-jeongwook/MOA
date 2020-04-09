@@ -1,6 +1,14 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Jumbotron, Form, Button } from "react-bootstrap";
+import {
+  Jumbotron,
+  Form,
+  Button,
+  Card,
+  Accordion,
+  Row,
+  Col,
+} from "react-bootstrap";
 import {
   getByDisplayValue,
   getDefaultNormalizer,
@@ -33,7 +41,7 @@ class UserInfo extends Component {
       }
     } catch (err) {}
   };
-
+  //////////////////////////////회원정보수정,탈퇴시 이메일 가져오는 기능/////////////////////////////
   componentDidMount() {
     this.getEmail();
   }
@@ -109,6 +117,7 @@ class UserInfo extends Component {
       email: this._id.value,
       password: this._pw2.value,
     };
+
     try {
       const result = await axios.post(
         "http://localhost:8080/member/deletemember",
@@ -162,56 +171,114 @@ class UserInfo extends Component {
   };
 
   render() {
+    const btnStyle = {
+      heigth: "50px",
+    };
+
     let profile_preview = null;
     if (this.state.file !== "") {
       profile_preview = (
         <img className="profile_preview" src={this.state.previewURL}></img>
       );
     }
+    const accordionStyle = {
+      textAlign: "center",
+    };
     return (
       <div>
         <Jumbotron className="float my-4 mr-5">
-          내정보<br></br>
-          아이디:
-          <input
-            ref={(ref) => (this._id = ref)}
-            defaultValue={this.state.id}
-            readOnly
-            disabled
-          ></input>
-          <br></br>
-          닉네임 :
-          <input
-            ref={(ref) => (this._nickname = ref)}
-            placeholder="닉네임"
-          ></input>
-          프로필사진 :
-          <input
-            ref={(ref) => (this._img = ref)}
-            placeholder="이미지.jpg"
-          ></input>{" "}
-          <br></br>
-          비밀번호 :
-          <input  type="password" ref={(ref) => (this._pw = ref)} placeholder="비밀번호"></input>
-          <br></br> 
-          비밀번호확인 :
-          <input type="password"
-            ref={(ref) => (this._pw1 = ref)}
-            placeholder="비밀번호확인"
-          ></input>
-          <br></br>
-          <br></br>
-          <Button onClick={this.Memberupdate} variant="primary">
-            정보 수정
-          </Button>
-          <br></br>
-          <input type="password"
-            ref={(ref) => (this._pw2 = ref)}
-            placeholder="비밀번호"
-          ></input>
-          <Button onClick={this.Deletemember} variant="primary">
-            회원 탈퇴
-          </Button>
+          <Form>
+            내정보<br></br>
+            <Row>
+              <Col>
+                <Form.Group controlId="formBasicEmail">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    ref={(ref) => (this._id = ref)}
+                    defaultValue={this.state.id}
+                    readOnly
+                    disabled
+                  />
+                </Form.Group>
+                <Form.Group controlId="formBasicEmail">
+                  <Form.Label>닉네임</Form.Label>
+                  <Form.Control
+                    ref={(ref) => (this._nickname = ref)}
+                    placeholder="닉네임"
+                  />
+                </Form.Group>
+              </Col>
+              <Form.Group
+                controlId="formBasicEmail"
+                onSubmit={this.handleSubmit}
+                encType="multipart/form-data"
+              >
+                <Form.Label>프로필사진</Form.Label>
+                <Form.Control
+                  ref={(ref) => (this.change_pro_img = ref)}
+                  type="file"
+                  accept="image/jpg,impge/png,image/jpeg,image/gif"
+                  name="profile_img"
+                  onChange={this.handleFileOnChange}
+                ></Form.Control>
+
+                {profile_preview}
+
+                <Form.Control type="submit" value="사진등록"></Form.Control>
+              </Form.Group>
+            </Row>
+            <Form.Group controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                ref={(ref) => (this._pw = ref)}
+                placeholder="비밀번호"
+              />
+            </Form.Group>
+            <Form.Group controlId="formBasicPassword">
+              <Form.Label>check Password</Form.Label>
+              <Form.Control
+                type="password"
+                ref={(ref) => (this._pw1 = ref)}
+                placeholder="비밀번호확인"
+              />
+            </Form.Group>
+            <br></br>
+            <Row>
+              <Col>
+                <Button
+                  block
+                  style={{ width: "300" }}
+                  onClick={this.Memberupdate}
+                  variant="primary"
+                >
+                  정보 수정
+                </Button>
+              </Col>
+              <Col>
+                <Accordion block>
+                  <Card>
+                    <Accordion.Toggle as={Button} variant="danger" eventKey="0">
+                      회원탈퇴하기
+                    </Accordion.Toggle>
+
+                    <Accordion.Collapse eventKey="0">
+                      <Card.Body style={accordionStyle}>
+                        <input
+                          type="password"
+                          ref={(ref) => (this._pw2 = ref)}
+                          placeholder="비밀번호"
+                        ></input>
+                        <Button onClick={this.Deletemember} variant="danger">
+                          회원 탈퇴
+                        </Button>
+                      </Card.Body>
+                    </Accordion.Collapse>
+                  </Card>
+                </Accordion>
+              </Col>
+            </Row>
+          </Form>
         </Jumbotron>
       </div>
     );

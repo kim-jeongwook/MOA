@@ -98,7 +98,7 @@ router.post("/Deletemember", async (req, res, next) => {
       where: { email, password },
     });
     if (!search_result) {
-      res.json({ resultCode: false, msg: "그런회원 없음 ㅗ " });
+      res.json({ resultCode: false, msg: "비밀번호 틀림 " });
     } else {
       res.json({ resultCode: true, msg: "ㅇㅋ ㅃㅃ ㅅㄱ" });
       req.session.destroy(() => {
