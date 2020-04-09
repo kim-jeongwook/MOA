@@ -13,7 +13,6 @@ class cRoom{
         this.master = master;
         this.timestamp = new Date();
         this.clients = [];    
-        this.sse = [];
     }
 }
 
@@ -25,7 +24,7 @@ let rooms = [];
 ////////////////////////////////////////////////////////////////////////
 router.get('/sse', (req,res) => {
     const app = SSE(res);
-    let time;
+    let time, clientnum = 0;
     
     if(rooms.length){
         const result = rooms.filter((room) => {
@@ -33,9 +32,8 @@ router.get('/sse', (req,res) => {
         });
         
         app.sendEvent("clients", () => {
-            result[0].sse.push(res);
-            return result[0].clients;;
-        }, 500);
+            return result[0].clients;
+        }, 1000);
 
         app.sendEvent("time", () => {
             time = new Date() - result[0].timestamp;
@@ -80,7 +78,7 @@ router.post("/enter", async (req, res) => {
                 const RoomItem = new cRoom(find_result.id, find_result.room_name, find_result.is_secret, find_result.master_id);
                 RoomItem.clients.push(req.session.email);
                 rooms.push(RoomItem);
-    
+
                 res.json({ 
                     resultCode: true, 
                     msg: { 

@@ -7,13 +7,11 @@ const fs=require("fs");
 const mime=require("mime");
 const MeetingLog=require('../schemas/MeetingLog');
 
-router.post('/file', upload.single('profile_img'), function (req,res, next) {
-    console.log('/file', req.body);
+router.post('/upload', upload.single('profile_img'), function (req,res, next) {
     console.log(req.file);
     console.log(req.file.filename);
     console.log(req.file.originalname);
-    res.send({filename:req.file.filename, originalname:req.file.originalname, msg:'파일 도착'});
-    
+    res.send({ resultCode: true, filename:req.file.filename, file_originalname: req.file.originalname, msg:'파일 도착'});
 })
 
 // 채팅 내용 및 filename DB에저장

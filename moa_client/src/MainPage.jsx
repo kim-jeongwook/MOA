@@ -39,7 +39,7 @@ class MainPage extends Component {
 
       case "InRoom":
         pageView = (
-          <Room Logined={this.props.Logined} roomInfo={this.props.roomInfo} />
+          <Room Logined={this.props.Logined} InRoom={this.props.InRoom} roomInfo={this.props.roomInfo} />
         );
         break;
 

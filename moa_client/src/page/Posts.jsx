@@ -19,6 +19,8 @@ class Posts extends Component{
         try{
             const result = await axios.post("http://localhost:8080/room/enter", { id });
             if(result.data.resultCode){
+                const room = result.data.msg;
+                room.es = new EventSource("http://localhost:8080/room/sse?t="+room.room_id, { credentials: 'include' })
                 this.props.InRoom(result.data.msg);
             } else {
                 console.log(result.data.msg);

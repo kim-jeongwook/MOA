@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import socketio from "socket.io-client";
+import { Row, Col, Container } from "react-bootstrap";
 
 import UserCam from "./room/UserCam";
 import OtherCams from "./room/OtherCams";
 import Chat from "./room/chat";
-import Time from "./room/Time";
 import ClientList from "./room/ClientList";
 
 const io=socketio.connect("ws://localhost:8080"); //ip수정 및 room setting 필요
@@ -14,11 +14,9 @@ class Room extends Component{
     constructor(props){
         super(props);
         io.emit('join',this.props.roomInfo.room_id);
-
         this.state={
             otherCams:[],
             selfstream:null,
-            es: new EventSource("http://localhost:8080/room/sse?t="+this.props.roomInfo.room_id, { credentials: 'include' }),
         }
     }
 
@@ -67,7 +65,7 @@ class Room extends Component{
     }
 
     componentWillUnmount = () => {
-        this.state.es.close();
+        this.props.roomInfo.es.close();
     }
 
     render(){
@@ -79,30 +77,24 @@ class Room extends Component{
         const column = {
             display: "table-cell",
         };
+       
         return(
-            <div>
-                <div>
-                    <span>미팅룸 명: {this.props.roomInfo.room_name}</span>
-                    <span>인원 : {this.props.roomInfo.headcount}명</span>
-                    <span>방장: {this.props.roomInfo.master}</span>
-                    <span>회의 시간: <Time es={this.state.es}/></span>
-                    <button onClick={this.props.Logined} >나가기</button>
-                </div>
-                <div style={row}>
-                    <div style={column}>
-                        <UserCam stream={this.state.selfstream}/>
-                    </div>
-                    <div style={column}>
-                        {this.state.otherCams}
-                    </div>
-                    <div style={column}>
-                        <ClientList es={this.state.es} />
-                    </div>
-                    <div style={column}>
-                        <Chat room={this.props.roomInfo.room_id} io={io}/>
-                    </div>
-                </div>
-            </div>
+                <Container fluid className="mx-2">
+                <Row>
+                    <Col xs={8}>
+                        <Row>
+                            <UserCam stream={this.state.selfstream}/>
+                        </Row>
+                        <Row>
+                            {this.state.otherCams}
+                        </Row>
+                    </Col>
+                    <Col>
+                        <Row><ClientList es={this.props.roomInfo.es} /></Row>
+                        <Row><Chat room={this.props.roomInfo.room_id} io={io}/></Row>
+                    </Col>
+                </Row>
+                </Container>
         );
     }
 }

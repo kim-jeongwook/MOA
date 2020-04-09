@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../redux/reduxFun";
 import { Navbar } from "react-bootstrap";
+import axios from "axios";
 
 import LoginedMenu from "./LoginedMenu";
 import RoomMenu from "./RoomMenu";
@@ -13,20 +14,29 @@ class Navigation extends Component {
         switch(this.props.pageValue){
             case "NotLogined":
             case "Signup":
-                navView = <div></div>;
+                navView = 
+                <Navbar bg="light" variant="light">
+                    <Navbar.Brand 
+                        onClick={this.props.NotLogined} 
+                        className="mr-auto">
+                        CompanyLogo
+                    </Navbar.Brand>
+                </Navbar>;
                 break;
                 
             case "Logined":
             case "UserInfo":
             case "CreateRoom":
-                navView = <LoginedMenu 
-                    NotLogined={this.props.NotLogined}
-                    UserInfo={this.props.UserInfo}
+                navView = 
+                    <LoginedMenu 
+                        Logined={this.props.Logined}
+                        NotLogined={this.props.NotLogined}
+                        UserInfo={this.props.UserInfo}
                     />;
                 break;
 
             case "InRoom":
-                navView = <RoomMenu />;
+                navView = <RoomMenu Logined= {this.props.Logined} roomInfo={this.props.roomInfo} />;
                 break;
 
             default:
@@ -36,12 +46,7 @@ class Navigation extends Component {
                 break;
         }
 
-        return(
-            <Navbar bg="light" variant="light">
-                <Navbar.Brand href="/" className="mr-auto">CompanyLogo</Navbar.Brand>
-                {navView}
-            </Navbar>
-        );
+        return(<div>{navView}</div>);
     }
 }
 

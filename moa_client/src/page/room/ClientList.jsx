@@ -1,37 +1,35 @@
 import React, { Component } from "react";
+import { ListGroup, Col, Container } from "react-bootstrap";
 
 class ClientList extends Component{
     state ={
-        clients: "",
+        clients: [],
     }
 
     /////////////////////////////////////////////////////////////////////////////
     // 채팅방 클라이언트 목록 받기
     /////////////////////////////////////////////////////////////////////////////
-    req_ClientList = () => {
-        this.props.es.addEventListener("clients", (result) => {
-            this.setState({
-                clients: result.data,
-            });
-        });
-    }
-
     componentDidMount(){
-        this.req_ClientList();
+        this.props.es.addEventListener("clients", (result) => {
+            const client_chunk = [];
+            result.data.replace(/[\[\]\"]/gi, "").split(/\,/gi).map((email) => {
+                client_chunk.push(email);
+            });
+            if(this.state.clients.length !== client_chunk.length)
+                this.setState({ clients: client_chunk });
+        });
     }
  
     render(){
-        /* const form_ClientList = this.state.clients.map((client) => {
-            return <tr><td>{client}</td></tr>;
-        });  */
+        let form_ClientList = this.state.clients.map((client, index) => {
+            return <ListGroup.Item key={index} >{client}</ListGroup.Item>;
+        });
+        
         return (
-            <span>
-                <table>
-                    <tbody>
-                        <tr><td>{this.state.clients}</td></tr>
-                    </tbody>
-                </table>
-            </span>
+            <Container fluid><ListGroup>
+                <ListGroup.Item variant="dark">채팅 참여자</ListGroup.Item>
+                {form_ClientList}
+            </ListGroup></Container>
         );
     }
 }

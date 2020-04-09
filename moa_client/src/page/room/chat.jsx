@@ -142,7 +142,7 @@ class Chat extends Component {
   }
 
   fileUpload2=()=>{
-      const file_originalname=this.state.file_originalname
+    const file_originalname=this.state.file_originalname
     var chat = document.getElementById('chat')
     var msg = document.createElement('div')
     var node = document.createTextNode(file_originalname)
@@ -159,35 +159,42 @@ class Chat extends Component {
 
   // 파일 업로드 실행 함수, 이름/메시지도 같이 보내짐
   fileUpload = async (event) => {
+    event.stopPropagation();
     event.preventDefault();
-    const formData = new FormData();
-    formData.append("profile_img", event.target.profile_img.files[0]);
+    
+    // 드래그앤드롭하면 파일이 들어옴
+    const files = event.target.files || event.dataTransfer.files;
 
-    this.register(formData);
-  };
-  register = (regiInfo) => {
-    fetch("http://localhost:8080/file/file", {
-      method: "post",
-      body: regiInfo,
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        alert(data.msg);
-        console.log(data.filename)
-        console.log(data.originalname)
+    // 파일 하나만
+    if (files.length > 1) {
+      alert('하나만 올려라.');
+      return;
+    }
+    
+    // 파일을 FormData에 담아서 서버로 전송
+    try{
+      const formData = new FormData();
+      formData.append("profile_img", files[0]);
+      const result = await axios.post("http://localhost:8080/file/upload", formData);
+      
+      if(result.data.resultCode){
+        alert(result.data.msg);
         this.setState({
-            filename:data.filename,
-            file_originalname:data.originalname
-        })
-        console.log(this.state.filename+":"+this.state.file_originalname)
-        this.fileUpload2();
-        this.chatSave();
-         
-            this.c.value = "";
-      });
-  };
-
+          filename: result.data.filename,
+          file_originalname: result.data.file_originalname
+        });
+          
+          this.fileUpload2();
+          this.chatSave();
+      } else {
+        console.log("파일을 넣을 수 없음");
+      }
+      
+    } catch(err) {
+      console.log("파일 전송 오류");
+    }
+  }
+  
 
     // 파일 다운로드
     downloadEmployeeData = (file, origin) => {
@@ -211,33 +218,20 @@ class Chat extends Component {
         );
       };
 
+      DragHandler = (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+      }
       
     render() {
         return(
-            <div id="main">
+            <div id="main" onDrop={this.fileUpload} onDragOver={this.DragHandler}>
                 <div id="chat">
                     
                 </div>
-                <div id>
+                <div>
                     <input type="text" ref={ref=>this.test=ref} placeholder="메시지를 입력해주세요.." />
                     <button onClick={this.send}>전송</button>
-                    <form
-                        name="accountFrm"
-                        onSubmit={this.fileUpload}
-                        encType="multipart/form-data"
-                        >
-                        <p>
-                            <input
-                            ref={(ref) => (this.c = ref)}
-                            type="file"
-                            accept="image/jpg,impge/png,image/jpeg,image/gif"
-                            name="profile_img"
-                            ></input>
-                        </p>
-                        <p>
-                            <input type="submit" value="파일전송"></input>
-                        </p>
-                    </form>
                 </div>
             </div>
         );

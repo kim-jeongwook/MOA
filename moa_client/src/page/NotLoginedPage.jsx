@@ -32,23 +32,7 @@ class NotLoginedPage extends Component {
     }
   };
 
-  //////////////////////////////////////////
-  /////새로고침시 로그인 유지기능//////////////
-  ////////////////////////////////////////
-  Keeplogin = async () => {
-    try {
-      const result = await axios.post("http://localhost:8080/member/Keeplogin");
-
-      if (result.data.resultCode) {
-        this.props.Logined();
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   render() {
-    this.Keeplogin();
     const ImgStyle = {
       backgroundImage: "url(/img/page_img_1.jpg)",
       backgroundSize: "100% 100%",
