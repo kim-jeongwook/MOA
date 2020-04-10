@@ -38,6 +38,7 @@ router.post("/Signup", (req, res, next) => {
                 const search_result = await Member.findOne({
                   where: { email },
                 });
+                console.log(search_result);
                 if (!search_result) {
                   await LoginSecret.create({
                     member_id: email,
@@ -75,23 +76,43 @@ router.post("/Signup", (req, res, next) => {
 router.post("/Login", async (req, res, next) => {
   //<<----로그인기능
   const email = req.body.email;
-  const password = req.body.password;
-
+  const pass = req.body.password;
   try {
-    const search_result = await Member.findOne({ where: { email, password } }); //db에서 맞는 이메일,비밀번호찾아 검증
-    if (!search_result) {
-      res.json({ resultCode: false, msg: "다시 로그인하세요" });
-    } else {
-      req.session.email = email; //세션생성
-      req.session.nickname = search_result.nickname; //세션생성
-      res.json({ resultCode: true, msg: "로그인 됨" });
-    }
-  } catch (err) {
-    // error 처리
-    resultCode = 0;
-    res.json({ resultCode: false, msg: "로그인에 문제가 생겼습니다." });
-    console.log(err);
-  }
+    let result = await LoginSecret.findOne({ where: { member_id: email } });
+    console.log(email);
+    console.log(result);
+    if (result) {
+      crypto.pbkdf2(
+        pass,
+        result.dataValues.salt,
+        100000,
+        64,
+        "sha512",
+        async (err, key) => {
+          const password = key.toString("base64");
+          console.log(password);
+          try {
+            const search_result = await Member.findOne({
+              where: { email, password },
+            }); //db에서 맞는 이메일,비밀번호찾아 검증
+            if (!search_result) {
+              res.json({ resultCode: false, msg: "다시 로그인하세요" });
+            } else {
+              req.session.email = email; //세션생성
+              req.session.nickname = search_result.nickname; //세션생성
+              res.json({ resultCode: true, msg: "로그인 됨" });
+            }
+          } catch (err) {
+            // error 처리
+            resultCode = 0;
+            res.json({ resultCode: false, msg: "로그인에 문제가 생겼습니다." });
+            console.log(err);
+          }
+        }
+      );
+    } else
+      res.json({ resultCode: false, msg: "다시 로그인하세요!!!!!!!!!!!!!!" });
+  } catch (err) {}
 });
 
 router.post("/Keeplogin", (req, res) => {
@@ -114,28 +135,43 @@ router.get("/logout", (req, res) => {
 router.post("/Deletemember", async (req, res, next) => {
   //<<----회원탈퇴 기능
   const email = req.body.email;
-  const password = req.body.password;
-
+  const pass = req.body.password;
   try {
-    console.log(req.body.email);
-    const search_result = await Member.destroy({
-      //db삭제
-      where: { email, password },
-    });
-    if (!search_result) {
-      res.json({ resultCode: false, msg: "비밀번호 틀림 " });
-    } else {
-      res.json({ resultCode: true, msg: "ㅇㅋ ㅃㅃ ㅅㄱ" });
-      req.session.destroy(() => {
-        res.json({ message: "탈퇴됨" });
-      });
-    }
-  } catch (err) {
-    // error 처리
-    resultCode = 0;
-    res.json({ resultCode: false, msg: "오류." });
-    console.log(err);
-  }
+    let result = await LoginSecret.findOne({ where: { member_id: email } });
+    if (result) {
+      crypto.pbkdf2(
+        pass,
+        result.dataValues.salt,
+        100000,
+        64,
+        "sha512",
+        async (err, key) => {
+          const password = key.toString("base64");
+          try {
+            console.log(req.body.email);
+            let result = await Member.findOne({ where: { email, password } });
+            if (result) {
+              await LoginSecret.destroy({ where: { member_id: email } });
+              await Member.destroy({
+                //db삭제
+                where: { email, password },
+              });
+              req.session.destroy(() => {
+                res.json({ msg: "탈퇴됨" });
+              });
+            } else {
+              res.json({ resultCode: false, msg: "다시 입력해 주세요 " });
+            }
+          } catch (err) {
+            // error 처리
+            resultCode = 0;
+            res.json({ resultCode: false, msg: "오류." });
+            console.log(err);
+          }
+        }
+      );
+    } else res.json({ msg: "오류" });
+  } catch (err) {}
 });
 
 router.post("/Memberupdate", async (req, res, next) => {
@@ -146,23 +182,47 @@ router.post("/Memberupdate", async (req, res, next) => {
   const nickname = req.body.nickname;
   const f_profile = req.body.profileimg;
 
-  try {
-    const result = await Member.update(
-      {
-        password: password,
-        nickname: nickname,
-        f_profile: f_profile,
-      },
-      { where: { email } }
-    );
+  crypto.randomBytes(64, (err, buf) => {
+    if (err) {
+    } else {
+      crypto.pbkdf2(
+        password,
+        buf.toString("base64"),
+        100000,
+        64,
+        "sha512",
+        async (err, key) => {
+          if (err) {
+          } else {
+            try {
+              await LoginSecret.update(
+                {
+                  salt: buf.toString("base64"),
+                  secret_key: key.toString("base64"),
+                },
+                { where: { member_id: email } }
+              );
+              const result = await Member.update(
+                {
+                  password: key.toString("base64"),
+                  nickname: nickname,
+                  f_profile: f_profile,
+                },
+                { where: { email } }
+              );
 
-    res.json({ resultCode: true, msg: "변경완료" });
-  } catch (err) {
-    // error 처리
-    resultCode = 0;
-    res.json({ resultCode: false, msg: "정보수정 오류." });
-    console.log(err);
-  }
+              res.json({ resultCode: true, msg: "변경완료" });
+            } catch (err) {
+              // error 처리
+              resultCode = 0;
+              res.json({ resultCode: false, msg: "정보수정 오류." });
+              console.log(err);
+            }
+          }
+        }
+      );
+    }
+  });
 });
 
 router.post("/img_upload", upload.single("profile_img"), function (
