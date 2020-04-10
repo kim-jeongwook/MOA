@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const models = require("../models");
 const Member = require("../models").Member;
+const LoginSecret = require("../models").LoginSecret;
 const multer = require("multer");
+const crypto = require("crypto");
 const upload = multer({ dest: "profile_uploads/" });
 
 router.post("/getEmail", (req, res) => {
@@ -10,38 +12,64 @@ router.post("/getEmail", (req, res) => {
   res.json({ email: req.session.email });
 });
 
-router.post("/Signup", async (req, res, next) => {
+router.post("/Signup", (req, res, next) => {
   //<<----회원가입기능
   const email = req.body.email;
   const password = req.body.password;
   const nickname = req.body.nickname;
   const f_profile = req.body.f_profile;
   // const nickname = req.body.nickname;
+  crypto.randomBytes(64, (err, buf) => {
+    if (err) {
+    } else {
+      crypto.pbkdf2(
+        password,
+        buf.toString("base64"),
+        100000,
+        64,
+        "sha512",
+        async (err, key) => {
+          if (err) {
+          } else {
+            try {
+              // 이메일 중복 조회, Member table insert, UserInfo table insert
+              await models.sequelize.transaction(async (t) => {
+                // 1. 이메일 중복 조회
+                const search_result = await Member.findOne({
+                  where: { email },
+                });
+                if (!search_result) {
+                  await LoginSecret.create({
+                    member_id: email,
+                    salt: buf.toString("base64"),
+                    secret_key: key.toString("base64"),
+                  });
+                  await Member.create({
+                    email,
+                    password: key.toString("base64"),
+                    nickname,
+                    f_profile,
+                  });
+                } else {
+                  res.json({ resultCode: false, msg: "중복된 이메일입니다" });
+                }
+              });
 
-  try {
-    // 이메일 중복 조회, Member table insert, UserInfo table insert
-    await models.sequelize.transaction(async (t) => {
-      // 1. 이메일 중복 조회
-      const search_result = await Member.findOne({ where: { email } });
-      if (!search_result) {
-        await Member.create({
-          email,
-          password,
-          nickname,
-          f_profile,
-        });
-      } else {
-        res.json({ resultCode: false, msg: "중복된 이메일입니다" });
-      }
-    });
-
-    res.json({ resultCode: true, msg: "가입이 완료되었습니다" });
-  } catch (err) {
-    // error 처리
-    resultCode = 0;
-    res.json({ resultCode: false, msg: "회원가입에 문제가 생겼습니다." });
-    console.log(err);
-  }
+              res.json({ resultCode: true, msg: "가입이 완료되었습니다" });
+            } catch (err) {
+              // error 처리
+              resultCode = 0;
+              res.json({
+                resultCode: false,
+                msg: "회원가입에 문제가 생겼습니다.",
+              });
+              console.log(err);
+            }
+          }
+        }
+      );
+    }
+  });
 });
 
 router.post("/Login", async (req, res, next) => {
