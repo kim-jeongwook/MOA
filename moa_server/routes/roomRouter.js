@@ -242,7 +242,6 @@ io.on("connection", (socket) => {
         rooms[socket.enter_room].clients.length;
       if (!rooms[socket.enter_room].clients.length)
         rooms.splice(socket.enter_room);
-      console.log(rooms[socket.enter_room]);
     }
   });
   socket.on("stream", (data) => {
@@ -252,20 +251,29 @@ io.on("connection", (socket) => {
       });
       if (itemToFind !== undefined && itemToFind !== -1) {
         rooms[socket.enter_room].clients[itemToFind].media = data;
-        console.log(rooms[socket.enter_room].clients);
       }
     }
   });
 
   socket.on("newUser", function (name) {
-    /* 소켓에 이름 저장해두기 */
-    socket.name = name;
-    /* 모든 소켓에게 전송 */
-    io.to(rooms[socket.enter_room].room_id).emit("update", {
-      type: "connect",
-      name: "SERVER",
-      message: name + "님이 접속하였습니다.",
-    });
+    if (socket.enter_room !== undefined && socket.enter_room !== -1) {
+      let itemToFind = rooms[socket.enter_room].clients.findIndex((item) => {
+        return item.socket === socket.id;
+      });
+      socket.name = "익명";
+      if (itemToFind !== undefined && itemToFind !== -1) {
+        if (rooms[socket.enter_room].clients[itemToFind].nickname)
+          socket.name = rooms[socket.enter_room].clients[itemToFind].nickname;
+        socket.emit("name", rooms[socket.enter_room].clients[itemToFind].email);
+      }
+
+      /* 모든 소켓에게 전송 */
+      io.to(rooms[socket.enter_room].room_id).emit("update", {
+        type: "connect",
+        name: socket.name,
+        message: socket.name + "님이 접속하였습니다.",
+      });
+    }
   });
 
   socket.on("message", function (data) {

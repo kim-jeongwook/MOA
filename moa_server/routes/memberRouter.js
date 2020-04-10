@@ -46,7 +46,6 @@ router.post("/Signup", async (req, res, next) => {
 
 router.post("/Login", async (req, res, next) => {
   //<<----로그인기능
-  const id = req.body.id;
   const email = req.body.email;
   const password = req.body.password;
 
@@ -56,7 +55,7 @@ router.post("/Login", async (req, res, next) => {
       res.json({ resultCode: false, msg: "다시 로그인하세요" });
     } else {
       req.session.email = email; //세션생성
-      req.session.name = nickname; //세션생성
+      req.session.nickname = search_result.nickname; //세션생성
       res.json({ resultCode: true, msg: "로그인 됨" });
     }
   } catch (err) {
