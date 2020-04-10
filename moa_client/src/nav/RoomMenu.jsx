@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Navbar, Nav, Row, Button, ButtonGroup, Col } from "react-bootstrap";
 import { PeopleCircle, Clock } from 'react-bootstrap-icons';
 import Time from "./Time";
+import HeadCount from "./HeadCount";
 
 class RoomMenu extends Component{
     render(){
@@ -9,7 +10,7 @@ class RoomMenu extends Component{
             <Navbar bg="light" variant="light">
                 <Nav className="mr-auto">
                     <Nav.Item><Nav.Link>{this.props.roomInfo.room_name} |</Nav.Link></Nav.Item>
-                    <Nav.Item><Nav.Link><PeopleCircle />  {this.props.roomInfo.headcount}</Nav.Link></Nav.Item>
+                    <Nav.Item><Nav.Link><PeopleCircle />  <HeadCount es={this.props.roomInfo.es} /></Nav.Link></Nav.Item>
                 </Nav>
                 <Nav>
                     <Nav.Item className="mr-2"><Nav.Link><Clock /> <Time es={this.props.roomInfo.es}/></Nav.Link></Nav.Item>

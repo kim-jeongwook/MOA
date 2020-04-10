@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import dotenv from "dotenv";
 
 import { createStore } from "redux";
 import { Provider } from "react-redux";
@@ -12,6 +13,8 @@ import MainPage from "./MainPage";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const store = createStore(Reducer);
+
+dotenv.config({ path: '../.env' });
 
 ReactDOM.render(
     <Provider store={store}>

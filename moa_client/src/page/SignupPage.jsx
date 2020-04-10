@@ -13,6 +13,7 @@ class SignupPage extends Component {
     previewURL: "",
     img_originalname: "",
   };
+
   /////////////////////////////////////////////////////////////////
   /////회원가입시 아이디를 이메일 형식으로 제한하는 기능//////////////
   //////////////////////////////////////////////////////////////////
@@ -27,6 +28,7 @@ class SignupPage extends Component {
     }
     return true;
   };
+  
   ////////////////////////////////////////////////////////////
   /////회원가입시 정규식을 이용한 비밀번호 로직  //////////////
   ///////////////////////////////////////////////////////////
@@ -86,7 +88,7 @@ class SignupPage extends Component {
         };
 
         const joinup_result = await axios.post(
-          "http://localhost:8080/member/signup",
+          process.env.REACT_APP_REQ + process.env.REACT_APP_REQ_SIGNUP,
           send_param
         );
         alert(joinup_result.data.msg);
@@ -118,7 +120,7 @@ class SignupPage extends Component {
     this.register(formData);
   };
   register = (regiInfo) => {
-    fetch("http://localhost:8080/member/img_upload", {
+    fetch(process.env.REACT_APP_REQ + process.env.REACT_APP_REQ_IMG_UPLOAD, {
       method: "post",
       body: regiInfo,
     })

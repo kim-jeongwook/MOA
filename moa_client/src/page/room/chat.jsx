@@ -23,7 +23,7 @@ class Chat extends Component {
 		};
 		try {
 			const result = await axios.post(
-				"http://localhost:8080/file/chat",
+				process.env.REACT_APP_REQ + process.env.REACT_APP_REQ_CHAT,
 				send_param
 			);
 		} catch (err) {
@@ -32,7 +32,7 @@ class Chat extends Component {
 	};
 
 	downloadEmployeeData = (file, origin) => {
-		fetch("http://localhost:8080/file/download", {
+		fetch(process.env.REACT_APP_REQ + process.env.REACT_APP_REQ_FILE_DOWNLOAD, {
 			method: "post",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ fn: file, kind: origin }),
@@ -189,7 +189,7 @@ class Chat extends Component {
 			const formData = new FormData();
 			formData.append("profile_img", files[0]);
 			const result = await axios.post(
-				"http://localhost:8080/file/upload",
+				process.env.REACT_APP_REQ + process.env.REACT_APP_REQ_FILE_UPLOAD,
 				formData
 			);
 

@@ -10,11 +10,11 @@ import ClientList from "./room/ClientList";
 
 axios.defaults.withCredentials = true;
 
-var io = socketio.connect("ws://localhost:8080");
+var io = socketio.connect(process.env.REACT_APP_SOCKET);
 const configuration = {
 	iceServers: [
 		{
-			urls: "stun:stun.l.google.com:19302",
+			urls: process.env.REACT_APP_ICESERVER,
 		},
 	],
 };
@@ -33,7 +33,7 @@ class Room extends Component {
 	req_outRoom = async (id) => {
 		console.log(id);
 		try {
-			const result = await axios.post("http://localhost:8080/room/out", {
+			const result = await axios.post(process.env.REACT_APP_REQ + process.env.REACT_APP_REQ_ROOM_OUT, {
 				id,
 			});
 			io.disconnect();

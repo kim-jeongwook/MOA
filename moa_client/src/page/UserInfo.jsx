@@ -31,7 +31,7 @@ class UserInfo extends Component {
   ////////////////////////////////////////
   getEmail = async () => {
     try {
-      const result = await axios.post("http://localhost:8080/member/getEmail", {
+      const result = await axios.post(process.env.REACT_APP_REQ + process.env.REACT_APP_REQ_GETMAIL, {
         headers,
       });
       if (result.data.email) {
@@ -94,7 +94,7 @@ class UserInfo extends Component {
         };
         
         const result = await axios.post(
-          "http://localhost:8080/member/memberupdate",
+          process.env.REACT_APP_REQ + process.env.REACT_APP_REQ_UPDATE,
           send_param
         );
         alert(result.data.msg);
@@ -121,7 +121,7 @@ class UserInfo extends Component {
 
     try {
       const result = await axios.post(
-        "http://localhost:8080/member/deletemember",
+        process.env.REACT_APP_REQ + process.env.REACT_APP_REQ_DELETE,
         send_param
       );
       alert(result.data.msg);
@@ -144,7 +144,7 @@ class UserInfo extends Component {
     this.register(formData);
   };
   register = (regiInfo) => {
-    fetch("http://localhost:8080/member/img_upload", {
+    fetch(process.env.REACT_APP_REQ + process.env.REACT_APP_REQ_IMG_UPLOAD, {
       method: "post",
       body: regiInfo,
     })
@@ -258,7 +258,7 @@ class UserInfo extends Component {
                 </Button>
               </Col>
               <Col>
-                <Accordion block>
+                <Accordion>
                   <Card>
                     <Accordion.Toggle as={Button} variant="danger" eventKey="0">
                       회원탈퇴하기

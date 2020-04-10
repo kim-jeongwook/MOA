@@ -17,13 +17,13 @@ class Posts extends Component {
   /////////////////////////////////////////////////////////////////////
   req_enterRoom = async (id) => {
     try {
-      const result = await axios.post("http://localhost:8080/room/enter", {
+      const result = await axios.post(process.env.REACT_APP_REQ + process.env.REACT_APP_REQ_ROOM_ENTER, {
         id,
       });
       if (result.data.resultCode) {
         const room = result.data.msg;
         room.es = new EventSource(
-          "http://localhost:8080/room/sse?t=" + room.room_id,
+          process.env.REACT_APP_REQ + process.env.REACT_APP_REQ_ROOMSSE + room.room_id,
           { credentials: "include" }
         );
         this.props.InRoom(result.data.msg);
@@ -40,7 +40,7 @@ class Posts extends Component {
   /////////////////////////////////////////////////////////////////////
   componentDidMount = async () => {
     try {
-      const result = await axios.get("http://localhost:8080/room");
+      const result = await axios.get(process.env.REACT_APP_REQ + process.env.REACT_APP_REQ_ROOMLIST);
       this.setState({
         public_rooms: result.data.msg.public_rooms,
         my_rooms: result.data.msg.my_rooms,
@@ -55,9 +55,9 @@ class Posts extends Component {
       this.state.my_rooms.length === 0 ? (
         <Col className="text-center">공개된 미팅룸이 없습니다</Col>
       ) : (
-        this.state.my_rooms.map((room) => {
+        this.state.my_rooms.map((room, index) => {
           return (
-            <Col sm={3}>
+            <Col key={index} sm={3}>
               <Card
                 className="my-3"
                 onClick={() => this.req_enterRoom(room.id)}
@@ -118,42 +118,3 @@ class Posts extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);
-
-{
-  /* <Button onClick={this.props.CreateRoom} variant="outline-dark">+ 미팅룸 만들기</Button>
-                <h1>내가 참여한 미팅룸</h1>
-                <Table bordered hover className="my-4">
-                    <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>Name</th>
-                            <th>url</th>
-                            <th>secret</th>
-                            <th>password</th>
-                            <th>masterid</th>
-                            <th>createdAt</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {my_rooms}
-                    </tbody>
-                </Table>
-                <hr/>
-                <h1>공개 미팅룸</h1>
-                <Table bordered hover className="my-4">
-                    <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>Name</th>
-                            <th>url</th>
-                            <th>secret</th>
-                            <th>password</th>
-                            <th>masterid</th>
-                            <th>createdAt</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {public_rooms}
-                    </tbody>
-                </Table> */
-}
