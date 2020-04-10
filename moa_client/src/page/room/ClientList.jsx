@@ -12,7 +12,7 @@ class ClientList extends Component{
     componentDidMount(){
         this.props.es.addEventListener("clients", (result) => {
             const client_chunk = [];
-            result.data.replace(/[[]"]/gi, "").split(/,/gi).forEach((email) => {
+            result.data.replace(/[\[\]\"]/gi, "").split(/,/gi).forEach((email) => {
                 client_chunk.push(email);
             });
             if(this.state.clients.length !== client_chunk.length)

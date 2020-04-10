@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Jumbotron, Card, Row, Col } from "react-bootstrap";
+import { Jumbotron, Card, Row, Col, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../redux/reduxFun";
 
@@ -101,6 +101,7 @@ class Posts extends Component {
 
     return (
       <div>
+        <Button onClick={this.props.CreateRoom} variant="outline-dark">+ 미팅룸 만들기</Button>
         <Jumbotron className="mx-4">
           <h1>내가 생성한 미팅방</h1>
           <hr />
