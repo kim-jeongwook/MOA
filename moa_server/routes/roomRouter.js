@@ -208,6 +208,7 @@ router.post("/out", (req, res) => {
 });
 
 io.on("connection", (socket) => {
+<<<<<<< HEAD
 	socket.on("join", (data) => {
 		socket.enter_room = rooms.findIndex((value) => {
 			return value.room_id === data;
@@ -279,6 +280,87 @@ io.on("connection", (socket) => {
 			message: name + "님이 접속하였습니다.",
 		});
 	});
+=======
+  socket.on("join", (data) => {
+    socket.enter_room = rooms.findIndex((value) => {
+      return value.room_id === data;
+    });
+    socket.join(data);
+  });
+  socket.on("onicecandidate", (data) => {
+    if (socket.enter_room !== undefined && socket.enter_room !== -1) {
+      socket.broadcast
+        .to(rooms[socket.enter_room].room_id)
+        .emit("onicecandidate", data);
+    }
+  });
+  socket.on("sdp", (data) => {
+    if (socket.enter_room !== undefined && socket.enter_room !== -1) {
+      socket.broadcast.to(rooms[socket.enter_room].room_id).emit("sdp", data);
+    }
+  });
+  socket.on("answer", (data) => {
+    if (socket.enter_room !== undefined && socket.enter_room !== -1) {
+      socket.broadcast
+        .to(rooms[socket.enter_room].room_id)
+        .emit("answer", data);
+    }
+  });
+  socket.on("disconnect", (evt) => {
+    if (socket.enter_room !== undefined && socket.enter_room !== -1) {
+      let itemToFind = rooms[socket.enter_room].clients.findIndex((item) => {
+        return item.socket === socket.id;
+      });
+      if (itemToFind !== undefined && itemToFind !== -1) {
+        socket.broadcast
+          .to(rooms[socket.enter_room].room_id)
+          .emit("out", rooms[socket.enter_room].clients[itemToFind].media);
+        socket.broadcast.to(rooms[socket.enter_room].room_id).emit("update", {
+          type: "disconnect",
+          name: "SERVER",
+          message: socket.name + "님이 나가셨습니다.",
+        });
+        socket.leave(rooms[socket.enter_room].room_id);
+        rooms[socket.enter_room].clients.splice(itemToFind, 1);
+      }
+      rooms[socket.enter_room].headcount =
+        rooms[socket.enter_room].clients.length;
+      if (!rooms[socket.enter_room].clients.length)
+        rooms.splice(socket.enter_room);
+    }
+  });
+  socket.on("stream", (data) => {
+    if (socket.enter_room !== undefined && socket.enter_room !== -1) {
+      let itemToFind = rooms[socket.enter_room].clients.findIndex((item) => {
+        return item.socket === socket.id;
+      });
+      if (itemToFind !== undefined && itemToFind !== -1) {
+        rooms[socket.enter_room].clients[itemToFind].media = data;
+      }
+    }
+  });
+
+  socket.on("newUser", function (name) {
+    if (socket.enter_room !== undefined && socket.enter_room !== -1) {
+      let itemToFind = rooms[socket.enter_room].clients.findIndex((item) => {
+        return item.socket === socket.id;
+      });
+      socket.name = "익명";
+      if (itemToFind !== undefined && itemToFind !== -1) {
+        if (rooms[socket.enter_room].clients[itemToFind].nickname)
+          socket.name = rooms[socket.enter_room].clients[itemToFind].nickname;
+        socket.emit("name", rooms[socket.enter_room].clients[itemToFind].email);
+      }
+
+      /* 모든 소켓에게 전송 */
+      io.to(rooms[socket.enter_room].room_id).emit("update", {
+        type: "connect",
+        name: socket.name,
+        message: socket.name + "님이 접속하였습니다.",
+      });
+    }
+  });
+>>>>>>> f160cd4885461fdc2ff3c9353edf49f9a0320107
 
 	socket.on("message", function (data) {
 		/* 받은 데이터에 누가 보냈는지 이름을 추가 */

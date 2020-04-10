@@ -46,7 +46,6 @@ router.post("/Signup", async (req, res, next) => {
 
 router.post("/Login", async (req, res, next) => {
   //<<----로그인기능
-  const id = req.body.id;
   const email = req.body.email;
   const password = req.body.password;
 
