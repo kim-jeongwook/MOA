@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Nav } from "react-bootstrap";
 
 class Time extends Component{
     state ={
@@ -12,7 +11,7 @@ class Time extends Component{
         /////////////////////////////////////////////////////////////////////////////
         this.props.es.addEventListener("time", (result) => {
             this.setState({
-                time: result.data.replace(/\"/g, ""),
+                time: result.data.replace(/"/g, ""),
             });
         });
     }

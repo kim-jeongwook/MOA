@@ -8,7 +8,7 @@ class HeadCount extends Component{
     componentDidMount = () => {
         this.props.es.addEventListener("headcount", (result) => {
             this.setState({
-                headCount: result.data.replace(/\"/g, ""),
+                headCount: result.data.replace(/"/g, ""),
             });
         });
     }

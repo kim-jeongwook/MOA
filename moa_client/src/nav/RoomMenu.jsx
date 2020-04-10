@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Navbar, Nav, Row, Button, ButtonGroup, Col } from "react-bootstrap";
+import { Navbar, Nav, Button, ButtonGroup } from "react-bootstrap";
 import { PeopleCircle, Clock } from 'react-bootstrap-icons';
 import Time from "./Time";
 import HeadCount from "./HeadCount";

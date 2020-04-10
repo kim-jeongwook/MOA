@@ -3,7 +3,6 @@ import axios from "axios";
 import { Jumbotron, Form, Button, Row, Col } from "react-bootstrap";
 
 axios.defaults.withCredentials = true; // 같은 origin이라 보증
-const headers = { withCredentials: true };
 
 class SignupPage extends Component {
   state = {
@@ -43,7 +42,7 @@ class SignupPage extends Component {
 
     var checkEnglish = password.search(/[a-z]/gi);
 
-    https: if (checkNumber < 0 || checkEnglish < 0) {
+    if (checkNumber < 0 || checkEnglish < 0) {
       alert("비밀번호는 숫자와 영문자를 혼용하여야 합니다.");
 
       return false;
@@ -153,7 +152,7 @@ class SignupPage extends Component {
     let profile_preview = null;
     if (this.state.file !== "") {
       profile_preview = (
-        <img className="profile_preview" src={this.state.previewURL}></img>
+        <img className="profile_preview" src={this.state.previewURL} alt="not view"></img>
       );
     }
     const joinbtnStyle = {

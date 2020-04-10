@@ -9,10 +9,6 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import {
-  getByDisplayValue,
-  getDefaultNormalizer,
-} from "@testing-library/react";
 
 axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
@@ -58,7 +54,7 @@ class UserInfo extends Component {
 
     var checkEnglish = password.search(/[a-z]/gi);
 
-    https: if (checkNumber < 0 || checkEnglish < 0) {
+    if (checkNumber < 0 || checkEnglish < 0) {
       alert("비밀번호는 숫자와 영문자를 혼용하여야 합니다.");
 
       return false;
@@ -173,14 +169,10 @@ class UserInfo extends Component {
   };
 
   render() {
-    const btnStyle = {
-      heigth: "50px",
-    };
-
     let profile_preview = null;
     if (this.state.file !== "") {
       profile_preview = (
-        <img className="profile_preview" src={this.state.previewURL}></img>
+        <img className="profile_preview" src={this.state.previewURL} alt="not view"></img>
       );
     }
     const accordionStyle = {

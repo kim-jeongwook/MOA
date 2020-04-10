@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../redux/reduxFun";
 import { Navbar } from "react-bootstrap";
-import axios from "axios";
 
 import LoginedMenu from "./LoginedMenu";
 import RoomMenu from "./RoomMenu";

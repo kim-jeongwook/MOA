@@ -176,23 +176,23 @@ class NotLoginedPage extends Component {
           </div>
         </section>
         <Jumbotron style={ImgStyle2}></Jumbotron>
-        <section class="page-section" id="services">
-          <div class="container" style={border}>
+        <section className="page-section" id="services">
+          <div className="container" style={border}>
             <br></br>
 
-            <hr class="divider my-4" />
-            <h2 class="text-center mt-0">
+            <hr className="divider my-4" />
+            <h2 className="text-center mt-0">
               {" "}
               이미 많은 분들이 사용하고 있습니다!<br></br>
               <br></br>
               지금 바로 가입하세요!
             </h2>
-            <hr class="divider my-4" />
+            <hr className="divider my-4" />
 
-            <div class="row">
-              <div class="col-lg-3 col-md-6 text-center">
-                <div class="mt-5">
-                  <i class="fas fa-4x fa-gem text-primary mb-4"></i>
+            <div className="row">
+              <div className="col-lg-3 col-md-6 text-center">
+                <div className="mt-5">
+                  <i className="fas fa-4x fa-gem text-primary mb-4"></i>
                 </div>
               </div>
             </div>
@@ -207,20 +207,8 @@ class NotLoginedPage extends Component {
                   className="portfolio-box"
                   href="assets/img/portfolio/fullsize/1.jpg"
                 >
-<<<<<<< HEAD
-                  <img class="img-fluid" src="/img/q1.jpg" alt="" />
-                  <div class="portfolio-box-caption"></div>
-=======
-                  <img
-                    className="img-fluid"
-                    src="assets/img/portfolio/thumbnails/1.jpg"
-                    alt=""
-                  />
-                  <div className="portfolio-box-caption">
-                    <div className="project-category text-white-50">Category</div>
-                    <div className="project-name">Project Name</div>
-                  </div>
->>>>>>> c68d057a581abbca36fb8195c68e154cc3e28dc1
+                  <img className="img-fluid" src="/img/q1.jpg" alt="" />
+                  <div className="portfolio-box-caption"></div>
                 </a>
               </div>
               <div className="col-lg-4 col-sm-6">
@@ -228,20 +216,8 @@ class NotLoginedPage extends Component {
                   className="portfolio-box"
                   href="assets/img/portfolio/fullsize/2.jpg"
                 >
-<<<<<<< HEAD
-                  <img class="img-fluid" src="/img/q2.jpg" alt="" />
-                  <div class="portfolio-box-caption"></div>
-=======
-                  <img
-                    className="img-fluid"
-                    src="assets/img/portfolio/thumbnails/2.jpg"
-                    alt=""
-                  />
-                  <div className="portfolio-box-caption">
-                    <div className="project-category text-white-50">Category</div>
-                    <div className="project-name">Project Name</div>
-                  </div>
->>>>>>> c68d057a581abbca36fb8195c68e154cc3e28dc1
+                  <img className="img-fluid" src="/img/q2.jpg" alt="" />
+                  <div className="portfolio-box-caption"></div>
                 </a>
               </div>
               <div className="col-lg-4 col-sm-6">
@@ -249,20 +225,8 @@ class NotLoginedPage extends Component {
                   className="portfolio-box"
                   href="assets/img/portfolio/fullsize/3.jpg"
                 >
-<<<<<<< HEAD
-                  <img class="img-fluid" src="/img/q3.jpg" alt="" />
-                  <div class="portfolio-box-caption"></div>
-=======
-                  <img
-                    className="img-fluid"
-                    src="assets/img/portfolio/thumbnails/3.jpg"
-                    alt=""
-                  />
-                  <div className="portfolio-box-caption">
-                    <div className="project-category text-white-50">Category</div>
-                    <div className="project-name">Project Name</div>
-                  </div>
->>>>>>> c68d057a581abbca36fb8195c68e154cc3e28dc1
+                  <img className="img-fluid" src="/img/q3.jpg" alt="" />
+                  <div className="portfolio-box-caption"></div>
                 </a>
               </div>
               <div className="col-lg-4 col-sm-6">
@@ -270,20 +234,8 @@ class NotLoginedPage extends Component {
                   className="portfolio-box"
                   href="assets/img/portfolio/fullsize/4.jpg"
                 >
-<<<<<<< HEAD
-                  <img class="img-fluid" src="/img/q4.jpg" alt="" />
-                  <div class="portfolio-box-caption"></div>
-=======
-                  <img
-                    className="img-fluid"
-                    src="assets/img/portfolio/thumbnails/4.jpg"
-                    alt=""
-                  />
-                  <div className="portfolio-box-caption">
-                    <div className="project-category text-white-50">Category</div>
-                    <div className="project-name">Project Name</div>
-                  </div>
->>>>>>> c68d057a581abbca36fb8195c68e154cc3e28dc1
+                  <img className="img-fluid" src="/img/q4.jpg" alt="" />
+                  <div className="portfolio-box-caption"></div>
                 </a>
               </div>
               <div className="col-lg-4 col-sm-6">
@@ -291,20 +243,8 @@ class NotLoginedPage extends Component {
                   className="portfolio-box"
                   href="assets/img/portfolio/fullsize/5.jpg"
                 >
-<<<<<<< HEAD
-                  <img class="img-fluid" src="/img/q7.jpg" alt="" />
-                  <div class="portfolio-box-caption"></div>
-=======
-                  <img
-                    className="img-fluid"
-                    src="assets/img/portfolio/thumbnails/5.jpg"
-                    alt=""
-                  />
-                  <div className="portfolio-box-caption">
-                    <div className="project-category text-white-50">Category</div>
-                    <div className="project-name">Project Name</div>
-                  </div>
->>>>>>> c68d057a581abbca36fb8195c68e154cc3e28dc1
+                  <img className="img-fluid" src="/img/q7.jpg" alt="" />
+                  <div className="portfolio-box-caption"></div>
                 </a>
               </div>
               <div className="col-lg-4 col-sm-6">
@@ -312,20 +252,8 @@ class NotLoginedPage extends Component {
                   className="portfolio-box"
                   href="assets/img/portfolio/fullsize/6.jpg"
                 >
-<<<<<<< HEAD
-                  <img class="img-fluid" src="/img/q9.jpg" alt="" />
-                  <div class="portfolio-box-caption p-3"></div>
-=======
-                  <img
-                    className="img-fluid"
-                    src="assets/img/portfolio/thumbnails/6.jpg"
-                    alt=""
-                  />
-                  <div className="portfolio-box-caption p-3">
-                    <div className="project-category text-white-50">Category</div>
-                    <div className="project-name">Project Name</div>
-                  </div>
->>>>>>> c68d057a581abbca36fb8195c68e154cc3e28dc1
+                  <img className="img-fluid" src="/img/q9.jpg" alt="" />
+                  <div className="portfolio-box-caption p-3"></div>
                 </a>
               </div>
             </div>
@@ -361,9 +289,9 @@ class NotLoginedPage extends Component {
             <br></br>
           </div>
         </section>
-        <footer class="bg-light py-5">
-          <div class="container">
-            <div class="small text-center text-muted">
+        <footer className="bg-light py-5">
+          <div className="container">
+            <div className="small text-center text-muted">
               Copyright © 2020 - Start Bootstrap
             </div>
           </div>

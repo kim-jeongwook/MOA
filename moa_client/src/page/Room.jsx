@@ -36,8 +36,10 @@ class Room extends Component {
 			const result = await axios.post(process.env.REACT_APP_REQ + process.env.REACT_APP_REQ_ROOM_OUT, {
 				id,
 			});
-			io.disconnect();
+			if(result){
+				io.disconnect();
 			io.connect();
+			}
 		} catch (err) {
 			console.log(err);
 		}
@@ -71,7 +73,7 @@ class Room extends Component {
 
 		io.on("out", (evt) => {
 			for (var i = 0; i < this.state.otherCams.length; i++) {
-				if (this.state.otherCams[i].key == evt)
+				if (this.state.otherCams[i].key === evt)
 					this.state.otherCams.splice(i, 1);
 			}
 			this.setState({});
@@ -124,15 +126,6 @@ class Room extends Component {
 	};
 
 	render() {
-		const row = {
-			display: "table",
-			width: "100%",
-		};
-
-		const column = {
-			display: "table-cell",
-		};
-
 		return (
 			<Container fluid className="mx-2">
 				<Row>
