@@ -16,7 +16,7 @@ class NotLoginedPage extends Component {
 
     try {
       const result = await axios.post(
-        "http://localhost:8080/member/Login",
+        process.env.REACT_APP_REQ + process.env.REACT_APP_REQ_LOGIN,
         send_param
       );
 
@@ -100,13 +100,13 @@ class NotLoginedPage extends Component {
             </Form>
           </Jumbotron>
         </div>
-        <section class="page-section bg-primary" id="about">
-          <div class="container" style={padding}>
-            <div class="row justify-content-center">
-              <div class="col-lg-8 text-center">
-                <h2 class="text-white mt-0">We've got what you need!</h2>
-                <hr class="divider light my-4" />
-                <p class="text-white-50 mb-4">
+        <section className="page-section bg-primary" id="about">
+          <div className="container" style={padding}>
+            <div className="row justify-content-center">
+              <div className="col-lg-8 text-center">
+                <h2 className="text-white mt-0">We've got what you need!</h2>
+                <hr className="divider light my-4" />
+                <p className="text-white-50 mb-4">
                   Did you have a hard time meeting because of the corona?{" "}
                   <br></br>Now don't worry, there's a MOA. <br></br>We offer
                   video conferencing and document sharing for up to 8 people.
@@ -117,56 +117,56 @@ class NotLoginedPage extends Component {
             </div>
           </div>
         </section>
-        <section class="page-section" id="services">
-          <div class="container" style={border}>
-            <h2 class="text-center mt-0">At Your Service</h2>
-            <hr class="divider my-4" />
-            <div class="row">
-              <div class="col-lg-3 col-md-6 text-center">
-                <div class="mt-5">
-                  <i class="fas fa-4x fa-gem text-primary mb-4"></i>
+        <section className="page-section" id="services">
+          <div className="container" style={border}>
+            <h2 className="text-center mt-0">At Your Service</h2>
+            <hr className="divider my-4" />
+            <div className="row">
+              <div className="col-lg-3 col-md-6 text-center">
+                <div className="mt-5">
+                  <i className="fas fa-4x fa-gem text-primary mb-4"></i>
                   <Image style={icon} src="/img/videoconference.png"></Image>
-                  <h3 class="h4 mb-2" style={padding}>
+                  <h3 className="h4 mb-2" style={padding}>
                     화상회의
                   </h3>
-                  <p class="text-muted mb-0">
+                  <p className="text-muted mb-0">
                     간편하게<br></br> 화상회의를 할수있습니다!
                   </p>
                 </div>
               </div>
-              <div class="col-lg-3 col-md-6 text-center">
-                <div class="mt-5">
-                  <i class="fas fa-4x fa-laptop-code text-primary mb-4"></i>
+              <div className="col-lg-3 col-md-6 text-center">
+                <div className="mt-5">
+                  <i className="fas fa-4x fa-laptop-code text-primary mb-4"></i>
                   <Image style={icon} src="/img/chat.png"></Image>
-                  <h3 class="h4 mb-2" style={padding}>
+                  <h3 className="h4 mb-2" style={padding}>
                     채팅
                   </h3>
-                  <p class="text-muted mb-0">
+                  <p className="text-muted mb-0">
                     회의와 함께 <br></br>채팅이 가능합니다!
                   </p>
                 </div>
               </div>
-              <div class="col-lg-3 col-md-6 text-center">
-                <div class="mt-5">
-                  <i class="fas fa-4x fa-globe text-primary mb-4"></i>
+              <div className="col-lg-3 col-md-6 text-center">
+                <div className="mt-5">
+                  <i className="fas fa-4x fa-globe text-primary mb-4"></i>
                   <Image style={icon} src="/img/result.png"></Image>
-                  <h3 class="h4 mb-2" style={padding}>
+                  <h3 className="h4 mb-2" style={padding}>
                     문서교환
                   </h3>
-                  <p class="text-muted mb-0">
+                  <p className="text-muted mb-0">
                     드래그엔 드롭으로<br></br> 간편하게 문서를 <br></br>교환할수
                     있습니다!
                   </p>
                 </div>
               </div>
-              <div class="col-lg-3 col-md-6 text-center">
-                <div class="mt-5">
-                  <i class="fas fa-4x fa-heart text-primary mb-4"></i>
+              <div className="col-lg-3 col-md-6 text-center">
+                <div className="mt-5">
+                  <i className="fas fa-4x fa-heart text-primary mb-4"></i>
                   <Image style={icon} src="/img/free.png"></Image>
-                  <h3 class="h4 mb-2" style={padding}>
+                  <h3 className="h4 mb-2" style={padding}>
                     무료 사용
                   </h3>
-                  <p class="text-muted mb-0">
+                  <p className="text-muted mb-0">
                     어려운 시기 우리 MOA는 <br></br>여러분에게 화상회의를
                     <br></br>무료로 제공합니다.
                   </p>
@@ -200,87 +200,159 @@ class NotLoginedPage extends Component {
         </section>
 
         <section id="portfolio">
-          <div class="container-fluid p-0">
-            <div class="row no-gutters">
-              <div class="col-lg-4 col-sm-6">
+          <div className="container-fluid p-0">
+            <div className="row no-gutters">
+              <div className="col-lg-4 col-sm-6">
                 <a
-                  class="portfolio-box"
+                  className="portfolio-box"
                   href="assets/img/portfolio/fullsize/1.jpg"
                 >
+<<<<<<< HEAD
                   <img class="img-fluid" src="/img/q1.jpg" alt="" />
                   <div class="portfolio-box-caption"></div>
+=======
+                  <img
+                    className="img-fluid"
+                    src="assets/img/portfolio/thumbnails/1.jpg"
+                    alt=""
+                  />
+                  <div className="portfolio-box-caption">
+                    <div className="project-category text-white-50">Category</div>
+                    <div className="project-name">Project Name</div>
+                  </div>
+>>>>>>> c68d057a581abbca36fb8195c68e154cc3e28dc1
                 </a>
               </div>
-              <div class="col-lg-4 col-sm-6">
+              <div className="col-lg-4 col-sm-6">
                 <a
-                  class="portfolio-box"
+                  className="portfolio-box"
                   href="assets/img/portfolio/fullsize/2.jpg"
                 >
+<<<<<<< HEAD
                   <img class="img-fluid" src="/img/q2.jpg" alt="" />
                   <div class="portfolio-box-caption"></div>
+=======
+                  <img
+                    className="img-fluid"
+                    src="assets/img/portfolio/thumbnails/2.jpg"
+                    alt=""
+                  />
+                  <div className="portfolio-box-caption">
+                    <div className="project-category text-white-50">Category</div>
+                    <div className="project-name">Project Name</div>
+                  </div>
+>>>>>>> c68d057a581abbca36fb8195c68e154cc3e28dc1
                 </a>
               </div>
-              <div class="col-lg-4 col-sm-6">
+              <div className="col-lg-4 col-sm-6">
                 <a
-                  class="portfolio-box"
+                  className="portfolio-box"
                   href="assets/img/portfolio/fullsize/3.jpg"
                 >
+<<<<<<< HEAD
                   <img class="img-fluid" src="/img/q3.jpg" alt="" />
                   <div class="portfolio-box-caption"></div>
+=======
+                  <img
+                    className="img-fluid"
+                    src="assets/img/portfolio/thumbnails/3.jpg"
+                    alt=""
+                  />
+                  <div className="portfolio-box-caption">
+                    <div className="project-category text-white-50">Category</div>
+                    <div className="project-name">Project Name</div>
+                  </div>
+>>>>>>> c68d057a581abbca36fb8195c68e154cc3e28dc1
                 </a>
               </div>
-              <div class="col-lg-4 col-sm-6">
+              <div className="col-lg-4 col-sm-6">
                 <a
-                  class="portfolio-box"
+                  className="portfolio-box"
                   href="assets/img/portfolio/fullsize/4.jpg"
                 >
+<<<<<<< HEAD
                   <img class="img-fluid" src="/img/q4.jpg" alt="" />
                   <div class="portfolio-box-caption"></div>
+=======
+                  <img
+                    className="img-fluid"
+                    src="assets/img/portfolio/thumbnails/4.jpg"
+                    alt=""
+                  />
+                  <div className="portfolio-box-caption">
+                    <div className="project-category text-white-50">Category</div>
+                    <div className="project-name">Project Name</div>
+                  </div>
+>>>>>>> c68d057a581abbca36fb8195c68e154cc3e28dc1
                 </a>
               </div>
-              <div class="col-lg-4 col-sm-6">
+              <div className="col-lg-4 col-sm-6">
                 <a
-                  class="portfolio-box"
+                  className="portfolio-box"
                   href="assets/img/portfolio/fullsize/5.jpg"
                 >
+<<<<<<< HEAD
                   <img class="img-fluid" src="/img/q7.jpg" alt="" />
                   <div class="portfolio-box-caption"></div>
+=======
+                  <img
+                    className="img-fluid"
+                    src="assets/img/portfolio/thumbnails/5.jpg"
+                    alt=""
+                  />
+                  <div className="portfolio-box-caption">
+                    <div className="project-category text-white-50">Category</div>
+                    <div className="project-name">Project Name</div>
+                  </div>
+>>>>>>> c68d057a581abbca36fb8195c68e154cc3e28dc1
                 </a>
               </div>
-              <div class="col-lg-4 col-sm-6">
+              <div className="col-lg-4 col-sm-6">
                 <a
-                  class="portfolio-box"
+                  className="portfolio-box"
                   href="assets/img/portfolio/fullsize/6.jpg"
                 >
+<<<<<<< HEAD
                   <img class="img-fluid" src="/img/q9.jpg" alt="" />
                   <div class="portfolio-box-caption p-3"></div>
+=======
+                  <img
+                    className="img-fluid"
+                    src="assets/img/portfolio/thumbnails/6.jpg"
+                    alt=""
+                  />
+                  <div className="portfolio-box-caption p-3">
+                    <div className="project-category text-white-50">Category</div>
+                    <div className="project-name">Project Name</div>
+                  </div>
+>>>>>>> c68d057a581abbca36fb8195c68e154cc3e28dc1
                 </a>
               </div>
             </div>
           </div>
         </section>
 
-        <section class="page-section" id="contact">
-          <div class="container">
-            <div class="row justify-content-center">
-              <div class="col-lg-8 text-center">
-                <h2 class="mt-0">Let's Get In Touch!</h2>
-                <hr class="divider my-4" />
-                <p class="text-muted mb-5">
+        <section className="page-section" id="contact">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-lg-8 text-center">
+                <h2 className="mt-0">Let's Get In Touch!</h2>
+                <hr className="divider my-4" />
+                <p className="text-muted mb-5">
                   Ready to start your next project with us? Give us a call or
                   send us an email and we will get back to you as soon as
                   possible!
                 </p>
               </div>
             </div>
-            <div class="row">
-              <div class="col-lg-4 ml-auto text-center mb-5 mb-lg-0">
-                <i class="fas fa-phone fa-3x mb-3 text-muted"></i>
+            <div className="row">
+              <div className="col-lg-4 ml-auto text-center mb-5 mb-lg-0">
+                <i className="fas fa-phone fa-3x mb-3 text-muted"></i>
                 <div>010-6893-3537</div>
               </div>
-              <div class="col-lg-4 mr-auto text-center">
-                <i class="fas fa-envelope fa-3x mb-3 text-muted"></i>
-                <a class="d-block" href="mailto:contact@yourwebsite.com">
+              <div className="col-lg-4 mr-auto text-center">
+                <i className="fas fa-envelope fa-3x mb-3 text-muted"></i>
+                <a className="d-block" href="mailto:contact@yourwebsite.com">
                   mybiggold@naver.com
                 </a>
               </div>

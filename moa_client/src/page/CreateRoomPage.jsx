@@ -35,7 +35,7 @@ class CreateRoomPage extends Component{
         };
 
         try{
-            const result = await axios.post("http://localhost:8080/room/create", send_param);
+            const result = await axios.post(process.env.REACT_APP_REQ + process.env.REACT_APP_REQ_ROOM_CREATE, send_param);
             if(result.data.resultCode){
                 alert(result.data.msg);
                 this.props.Logined();

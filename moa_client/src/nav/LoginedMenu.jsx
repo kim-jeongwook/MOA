@@ -5,7 +5,7 @@ import { Navbar, Nav } from "react-bootstrap";
 class LoginedMenu extends Component {
   logout = async () => {
     try {
-      const result = await axios.get("http://localhost:8080/member/logout");
+      const result = await axios.get(process.env.REACT_APP_REQ + process.env.REACT_APP_REQ_LOGOUT);
       alert(result.data.message);
       this.props.NotLogined();
     } catch (err) {
