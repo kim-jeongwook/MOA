@@ -4,5 +4,9 @@ node_modules/
 // 모든 config 폴더를 git ignore
 config/
 
+// 파일 업로드 경로 git ignore
+profile_uploads/
+uploads/
+
 // 모든 .env 파일을 git ignore
 .env

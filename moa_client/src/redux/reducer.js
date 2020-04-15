@@ -2,6 +2,7 @@ const reducer = (state, action) => {
     if(state === undefined){
         return ({
             page_status : "NotLogined",
+            roomInfo: {},
         });
     }
 
@@ -16,7 +17,10 @@ const reducer = (state, action) => {
             return { page_status: "UserInfo" };
             
         case "InRoom":
-            return { page_status: "InRoom" };
+            return { 
+                page_status: "InRoom",
+                roomInfo: action.roomInfo,
+            };
 
         case "Signup":
             return { page_status: "Signup" };

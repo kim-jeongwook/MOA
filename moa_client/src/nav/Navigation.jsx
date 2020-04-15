@@ -13,20 +13,39 @@ class Navigation extends Component {
         switch(this.props.pageValue){
             case "NotLogined":
             case "Signup":
+<<<<<<< HEAD
                 navView = <div></div>;
+=======
+                navView = 
+                <Navbar bg="light" variant="light">
+                    <Navbar.Brand 
+                        onClick={this.props.NotLogined} 
+                        className="mr-auto">
+                        CompanyLogo
+                    </Navbar.Brand>
+                </Navbar>;
+>>>>>>> c51dd9aed68088c8d0bc72ff22ac1a2d1ac267c1
                 break;
                 
             case "Logined":
             case "UserInfo":
             case "CreateRoom":
+<<<<<<< HEAD
                 navView = <LoginedMenu 
                     NotLogined={this.props.NotLogined}
                     UserInfo={this.props.UserInfo}
+=======
+                navView = 
+                    <LoginedMenu 
+                        Logined={this.props.Logined}
+                        NotLogined={this.props.NotLogined}
+                        UserInfo={this.props.UserInfo}
+>>>>>>> c51dd9aed68088c8d0bc72ff22ac1a2d1ac267c1
                     />;
                 break;
 
             case "InRoom":
-                navView = <RoomMenu />;
+                navView = <RoomMenu Logined= {this.props.Logined} roomInfo={this.props.roomInfo} />;
                 break;
 
             default:
@@ -36,12 +55,16 @@ class Navigation extends Component {
                 break;
         }
 
+<<<<<<< HEAD
         return(
             <Navbar bg="light" variant="light">
                 <Navbar.Brand href="/" className="mr-auto">CompanyLogo</Navbar.Brand>
                 {navView}
             </Navbar>
         );
+=======
+        return(<div>{navView}</div>);
+>>>>>>> c51dd9aed68088c8d0bc72ff22ac1a2d1ac267c1
     }
 }
 
