@@ -1,14 +1,13 @@
 import React, { Component } from "react";
+import { Nav } from "react-bootstrap";
 
 class RoomMenu extends Component{
     render(){
-        const menuStyle = { float: "right", margin: "1vw" };
-
         return(
-            <div>
-                <span style={menuStyle}>일정</span>
-                <span style={menuStyle}>회의록</span>
-            </div>
+            <Nav>
+                <Nav.Link>일정</Nav.Link>
+                <Nav.Link>회의록</Nav.Link>
+            </Nav>
         );
     }
 }

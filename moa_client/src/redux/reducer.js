@@ -21,6 +21,9 @@ const reducer = (state, action) => {
         case "Signup":
             return { page_status: "Signup" };
 
+        case "CreateRoom":
+            return { page_status: "CreateRoom" };
+            
         default:
             return state;
     }

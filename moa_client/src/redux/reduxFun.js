@@ -13,6 +13,7 @@ const mapDispatchToProps = (dispatch) => {
         UserInfo:   () => { return dispatch({ type: "UserInfo" }); },
         InRoom:     () => { return dispatch({ type: "InRoom" }); },
         Signup:     () => { return dispatch({ type: "Signup" }); },
+        CreateRoom: () => { return dispatch({ type: "CreateRoom" }); },
     };
 }
 

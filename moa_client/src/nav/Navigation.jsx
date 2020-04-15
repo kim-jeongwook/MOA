@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "../redux/reduxFun";
+import { Navbar } from "react-bootstrap";
 
 import LoginedMenu from "./LoginedMenu";
 import RoomMenu from "./RoomMenu";
@@ -12,12 +12,13 @@ class Navigation extends Component {
 
         switch(this.props.pageValue){
             case "NotLogined":
+            case "Signup":
                 navView = <div></div>;
                 break;
                 
             case "Logined":
             case "UserInfo":
-            case "Signup":
+            case "CreateRoom":
                 navView = <LoginedMenu 
                     NotLogined={this.props.NotLogined}
                     UserInfo={this.props.UserInfo}
@@ -35,23 +36,11 @@ class Navigation extends Component {
                 break;
         }
 
-        // style
-        const headerStyle = {
-            overflow: "hidden",
-            backgroundColor: "f1f1f1",
-            padding: "20px 10px",
-        };
-
-        const logoStyle = {
-            fontSize: "25px",
-            fontWeight: "bold",
-        };
-
         return(
-            <div style={headerStyle}>
-                <a href="/" style={logoStyle}>CompanyLogo</a>
+            <Navbar bg="light" variant="light">
+                <Navbar.Brand href="/" className="mr-auto">CompanyLogo</Navbar.Brand>
                 {navView}
-            </div>
+            </Navbar>
         );
     }
 }
